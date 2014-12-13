@@ -1,0 +1,26 @@
+<div class='page-heading-stripe'>
+  <div class='container'>
+    <h1>
+      <i class='fa fa-plus fa-fw'></i>
+      <span class='page-heading-deckTitle'>Create a new deck &hellip;</span>
+    </h1>
+  </div>
+</div>
+<div class='container'>
+<form role='form' ng-submit='process_form()'>
+
+  <div class='form-group' id='deck-name-group'>
+    <label for='deck-name'>Enter a name for your deck</label>
+    <input type='text' class='form-control' id='deck-name' placeholder='My Deck' ng-model='deckName'>
+    <span class='help-block'></span>
+  </div>
+
+  <div class='form-group' id='deck-description-group'>
+    <label for='deck-description'>Enter a description of your deck</label>
+    <input type='text' class='form-control' id='deck-description' placeholder='Description' ng-model='deckDescription'>
+    <span class='help-block'></span>
+  </div>
+  <button type='submit' class='btn btn-primary'>Submit</button>
+</form>
+<br />
+</div>
