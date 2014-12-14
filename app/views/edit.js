@@ -11,7 +11,7 @@
       this.subViews = {
         'header'  : new App.Views.EditorHeader(this.model),
         'newCard' : new App.Views.EditorNewCard(this.model),
-        'cards'   : new App.Views.EditorCards(this.model),
+        'cards'   : new App.Views.EditorCards(this.model.get('cards')),
         'toolkit' : new App.Views.EditorToolkit(this.model)
       };
 
@@ -72,6 +72,7 @@
         /* disable the inputs */
         this.$('.card-editor').disable(true);
         this.$('#view-editor-newCard-btn').disable(true);
+        console.log(this.$('.card-editor'));
         /* add card to collection and save to database */
         this.model.get('cards').create(card, { success: function() {
           this.$('.card-editor').disable(false);
@@ -94,14 +95,51 @@
     }
   });
 
+  /* Single card edit */
+  App.Views.EditorCard = Backbone.View.extend({
+    template: _.template($('#view-editor-card-template').html()),
+    initialize: function() {
+      // this.model = model;
+      this.listenTo(this.model, 'all', this.render);
+    },
+    events: {
+
+    },
+    render: function() {
+      console.log('rendering card');
+      this.$el.html(this.template(this.model.toJSON()));
+      this.$('.card-front-container .card-editor').val(this.model.get('front'));
+      this.delegateEvents();
+      return this;
+    }
+  });
+
+  /* collection of single-card edit views */
   App.Views.EditorCards = Backbone.View.extend({
     template: _.template($('#view-editor-cards-template').html()),
     initialize: function(model) {
       this.model = model;
-      this.model.get('cards').on('sync', this.render, this);
+      this.listenToOnce(this.model, 'sync', this.render);
     },
     render: function() {
-      this.$el.html(this.template({ cards: this.model.get('cards').toJSON() }));
+      console.log('renderin');
+      this.$el.html(this.template({ cards: this.model.toJSON() }));
+
+      /* Create a single fragment instead of immediately appending to the DOM,
+       * If we were to append each model in the collection to the DOM, it would
+       * cause a reflow each time. Instead, render all models in a fragment
+       * first, and then render the fragment once. */
+      var fragment = document.createDocumentFragment();
+      _.each(this.model.toArray().reverse(), function(card) {
+        var cardView = new App.Views.EditorCard({
+          model: card,
+          el: $('<div class="card-editor-bank"></div>')
+        });
+        fragment.appendChild(cardView.render().el);
+      });
+
+      /* append entire fragment */
+      this.$('.view-editor-cards-container').html(fragment);
       return this;
     }
   });

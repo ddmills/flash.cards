@@ -85,31 +85,32 @@
   </div>
 </script>
 
+<script id='view-editor-card-template' type='text/template'>
+  <div class='row'>
+    <div class='col-sm-6'>
+      <%= front %>
+      <div class='card-front-container card-editor-container'>
+        <textarea class='card-editor' placeholder='Enter card Front'><%= front %></textarea>
+      </div>
+    </div>
+    <div class='col-sm-6'>
+      <div class='card-back-container card-editor-container'>
+        <textarea class='card-editor' placeholder='Enter card back'><%= back %></textarea>
+      </div>
+    </div>
+  </div>
+  <div class='btn-group btn-group-sm pull-right'>
+    <button class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
+    <button class='btn btn-default' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
+  </div>
+  <div class='clearfix'></div>
+</script>
+
 <script id='view-editor-cards-template' type='text/template'>
   <div class='panel-heading'>
     <i class='fa fa-fw fa-file-o'></i> Cards (<%= cards.length %>)
   </div>
-  <% _.each(cards.reverse(), function(card) { %>
-  <div class='card-editor-bank'>
-    <div class='row'>
-      <div class='col-sm-6'>
-        <div class='card-left card-editor-container'>
-          <textarea class='card-editor' placeholder='Enter card Front'><%= card.front %></textarea>
-        </div>
-      </div>
-      <div class='col-sm-6'>
-        <div class='card-right card-editor-container'>
-          <textarea class='card-editor' placeholder='Enter card back'><%= card.back %></textarea>
-        </div>
-      </div>
-    </div>
-    <div class='btn-group btn-group-sm pull-right'>
-      <button class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
-      <button class='btn btn-default' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
-    </div>
-    <div class='clearfix'></div>
-  </div>
-  <% }); %>
+  <div class='view-editor-cards-container'></div>
 </script>
 
 <script id='view-editor-toolkit-template' type='text/template'>
