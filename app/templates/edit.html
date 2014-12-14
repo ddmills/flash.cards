@@ -54,10 +54,10 @@
   <% } %>
 </script>
 
-<!-- Single-Card Edit Template -->
+<!-- newCard Edit Template -->
 <script id='view-editor-newCard-template' type='text/template'>
   <div class='panel-heading'>
-    <i class='fa fa-fw fa-th-list'></i> Add Card
+    <i class='fa fa-fw fa-plus'></i> Add Card
     <div class='pull-right'>
       <div class='btn-group btn-group-xs'>
         <button class='btn btn-default' type='button'>A Button</button>
@@ -81,15 +81,15 @@
     </div>
   </div>
   <div class='panel-body'>
-    <button id='view-editor-newCard-btn' type='button' class='btn btn-default btn-block'> Add </button>
+    <button id='view-editor-newCard-btn' type='button' class='btn btn-default btn-block'> Add <i class='fa fa-fw fa-plus'></i> </button>
   </div>
 </script>
 
 <script id='view-editor-cards-template' type='text/template'>
   <div class='panel-heading'>
-    <i class='fa fa-fw fa-file-o'></i> Cards
+    <i class='fa fa-fw fa-file-o'></i> Cards (<%= cards.length %>)
   </div>
-  <% _.each(cards.toJSON(), function(card) { %>
+  <% _.each(cards.reverse(), function(card) { %>
   <div class='card-editor-bank'>
     <div class='row'>
       <div class='col-sm-6'>

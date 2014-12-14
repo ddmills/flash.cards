@@ -77,7 +77,9 @@ body {}
 .card-editor-bank { padding: 20px; }
 .card-editor-bank > .row { padding-bottom: 20px; }
 .card-editor-bank:not(:last-child) { border-bottom: 1px solid #ddd; }
-.card-editor-container { position: relative; }
+.card-editor-container {
+  position: relative;
+  background-color: #eee; }
 .card-front.card-editor-container {}
 .card-back.card-editor-container {}
 .card-editor {
@@ -91,10 +93,13 @@ body {}
   border: 1px solid #D4DFE0;
   min-height: 148px;
   width: 100%;
-  resize: none; }
+  resize: none;
+  opacity: 1;
+  transition: opacity .25s ease-in-out; }
 .card-editor:focus {
   border: 1px solid #C9CCCC;
   box-shadow: 0px 0px 4px rgb(170, 222, 239); }
+.card-editor:disabled { opacity: .75 }
 .card-editor-curtain {
   position: absolute;
   width: 100%;

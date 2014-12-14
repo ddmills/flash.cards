@@ -66,21 +66,20 @@
         back: $('#view-editor-newCard-back').val()
       });
 
-      $('#view-editor-newCard-front-error').html('');
-      $('#view-editor-newCard-back-error').html('');
-
-
-
-
       if (card.isValid()) {
+        /* add saving curtains */
         this.$('.card-editor-curtain').html('<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>');
-        this.$('.card-editor-curtain').addClass('faded');
+        /* disable the inputs */
+        this.$('.card-editor').disable(true);
+        this.$('#view-editor-newCard-btn').disable(true);
+        /* add card to collection and save to database */
         this.model.get('cards').create(card, { success: function() {
-          $('#view-editor-newCard-front').val(''),
-          $('#view-editor-newCard-back').val(''),
+          this.$('.card-editor').disable(false);
+          this.$('#view-editor-newCard-btn').disable(false);
+          this.$('.card-editor').val(''),
           this.$('.card-editor-curtain').removeClass('faded');
           this.$('.card-editor-curtain').html('');
-
+          this.$('#view-editor-newCard-front').focus();
         }});
       } else {
         _.each(card.validationError, function(error) {
@@ -102,7 +101,7 @@
       this.model.get('cards').on('sync', this.render, this);
     },
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.html(this.template({ cards: this.model.get('cards').toJSON() }));
       return this;
     }
   });
