@@ -1,0 +1,49 @@
+<!-- Create-a-deck Page Template -->
+<script id='view-create-template' type='text/template'>
+  <div class='page-heading-stripe'>
+    <div class='container'>
+      <h1>
+        <i class='fa fa-plus fa-fw'></i>
+        <span class='page-heading-deckTitle'>
+          Create a new deck &hellip;
+        </span>
+      </h1>
+    </div>
+  </div>
+  <div class='container'>
+    <form role='form' id='create-deck-form'>
+
+      <div class='form-group'>
+        <label for='deck-name'>Name <span class='note'>enter a name for your deck</span></label>
+        <input id='deck-name' type='text' maxlength='32' class='form-control' name='name' placeholder='My Deck'>
+        <p id='help-deck-name' class='help-block-danger'></p>
+      </div>
+
+      <div class='form-group'>
+        <label for='deck-description'>Description <span class='note'>(optional)</span> </label>
+        <input type='text' id='deck-description' maxlength='256' class='form-control' name='description' placeholder='Description'>
+        <span class='help-block'></span>
+      </div>
+
+      <hr></hr>
+
+      <div class='radio radio-privacy'>
+        <label>
+          <input type='radio' name='public' value='1'> <i class='fa fa-fw fa-unlock'></i> Public
+        </label>
+        <p class="help-block">Anyone can view this deck.</p>
+      </div>
+
+      <div class='radio radio-privacy'>
+        <label>
+          <input type='radio' name='public' value='0' disabled> <i class='fa fa-fw fa-lock'></i> Private
+        </label>
+        <p class="help-block">You choose who can view or edit this deck. Currently unavailable.</p>
+      </div>
+
+      <hr></hr>
+
+      <button id='submit-create-deck' type='button' class='btn btn-success'>Create</button>
+    </form>
+  </div>
+</script>

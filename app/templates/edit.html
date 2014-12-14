@@ -1,0 +1,126 @@
+<!-- Edit Deck Template -->
+<script id='view-editor-template' type='text/template'>
+  <div id='view-editor-header'></div>
+  <% if (loaded) { %>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-md-8'>
+        <div class='panel panel-default' id='view-editor-newCard'></div>
+        <div class='panel panel-default' id='view-editor-cards'></div>
+      </div>
+      <div class='col-md-4'>
+        <div class='panel panel-default' id='view-editor-toolkit'></div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</script>
+
+<!-- Edit Deck Header Template -->
+<script id='view-editor-header-template' type='text/template'>
+  <div class='page-heading-stripe'>
+    <div class='container'>
+      <h1>
+        <i class='fa fa-book fa-fw'></i>
+        Deck:
+        <span class='page-heading-deckTitle'>
+        <% if (loaded) { %>
+          <%= name %>
+        <% } else { %>
+          Loading
+        <% } %>
+        </span>
+        <% if (!loaded) { %>
+        <i class='fa fa-fw fa-cog fa-spin'></i>
+        <% } %>
+      </h1>
+      <% if (loaded) { %>
+      <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
+        <button type='button' class='btn btn-default'> <i class='fa fa-share-alt fa-fw'></i> Share </button>
+        <button type='button' class='btn btn-default'> <i class='fa fa-font fa-fw'></i> Rename </button>
+        <button type='button' class='btn btn-default'> <i class='fa fa-trash fa-fw'></i> Delete </button>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <% if (loaded) { %>
+  <div class='container'>
+    <% if (description.length > 0) { %>
+    <p class='meta-deck-description'> <%= description %> - <a href='#'>edit</a></p>
+    <% } else { %>
+      <p class='meta-deck-description'><a href='#'><i class='fa fa-fw fa-plus'></i> add a description</a></p>
+    <% } %>
+  </div>
+  <% } %>
+</script>
+
+<!-- Single-Card Edit Template -->
+<script id='view-editor-newCard-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-th-list'></i> Add Card
+    <div class='pull-right'>
+      <div class='btn-group btn-group-xs'>
+        <button class='btn btn-default' type='button'>A Button</button>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='card-editor-bank'>
+      <div class='col-sm-6'>
+        <div class='card-front-container card-editor-container'>
+          <div class='card-editor-curtain'></div>
+          <textarea id='view-editor-newCard-front' class='card-editor' placeholder='Enter card front'></textarea>
+        </div>
+      </div>
+      <div class='col-sm-6'>
+        <div class='card-back-container card-editor-container'>
+          <div class='card-editor-curtain'></div>
+          <textarea id='view-editor-newCard-back' class='card-editor' placeholder='Enter card back'></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='panel-body'>
+    <button id='view-editor-newCard-btn' type='button' class='btn btn-default btn-block'> Add </button>
+  </div>
+</script>
+
+<script id='view-editor-cards-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-file-o'></i> Cards
+  </div>
+  <% _.each(cards.toJSON(), function(card) { %>
+  <div class='card-editor-bank'>
+    <div class='row'>
+      <div class='col-sm-6'>
+        <div class='card-left card-editor-container'>
+          <textarea class='card-editor' placeholder='Enter card Front'><%= card.front %></textarea>
+        </div>
+      </div>
+      <div class='col-sm-6'>
+        <div class='card-right card-editor-container'>
+          <textarea class='card-editor' placeholder='Enter card back'><%= card.back %></textarea>
+        </div>
+      </div>
+    </div>
+    <div class='btn-group btn-group-sm pull-right'>
+      <button class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
+      <button class='btn btn-default' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
+    </div>
+    <div class='clearfix'></div>
+  </div>
+  <% }); %>
+</script>
+
+<script id='view-editor-toolkit-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-wrench'></i>
+    Options
+  </div>
+  <div class='panel-body'>
+    <div class='form-group'>
+      <label> Enter Tags </label>
+      <input type='text' class='form-control' placeholder='Western History, Math, Trig'>
+    </div>
+  </div>
+</script>
