@@ -44,7 +44,11 @@
             App.Router.navigate('edit/' + public_key, { trigger: true });
           }});
         } else {
-          $('#help-deck-name').html(this.model.validationError);
+          console.log(this.model);
+          _.each(this.model.validationError, function(error) {
+            this.$('#help-deck-'+ error.name).html(error.message);
+          });
+          
         }
       },
 
