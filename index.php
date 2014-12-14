@@ -23,10 +23,12 @@
   <!-- MAIN MODALS (populated by bootstrap modals) -->
   <div id='main-modals'></div>
 
+  <?php include 'app/footer.html'; ?>
+
   <!-- STYLES -->
   <link rel='stylesheet' href='assets/css/bootstrap.min.css'></link>
   <link rel='stylesheet' href='assets/css/font-awesome.min.css'></link>
-  <link rel='stylesheet' href='assets/css/main.css'></link>
+  <link rel='stylesheet' href='app/main.css'></link>
 
   <!-- VENDOR SCRIPTS -->
   <script src='assets/js/jquery.min.js'></script>

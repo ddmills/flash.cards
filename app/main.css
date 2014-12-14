@@ -1,4 +1,11 @@
 body {}
+#main-content { min-height: 420px; }
+#main-footer .container {
+  border-top: 1px solid #EEE;
+  margin-top: 60px;
+  padding: 10px 0px;
+  font-size: 11px;
+  color: #aaa; }
 .main-navigation {
   background-image: url("../img/nz.gif");
   background-color: #F5F5F5;
