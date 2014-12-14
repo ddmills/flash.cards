@@ -8,6 +8,17 @@
   }
 })(window);
 
+/* add a disable function to jQuery.
+ * To disable some object(s):
+ * $('.some-classname').disable(true);
+ * to enable the object(s) again:
+ * $('.some-classname').disable(false); */
+jQuery.fn.extend({
+  disable: function(state) {
+    return this.each(function() { this.disabled = state; });
+  }
+});
+
 /* Method for tearing down a Backbone View */
 Backbone.View.prototype.close = function() {
   /* remove DOM html associated with the View and any events
