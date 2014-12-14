@@ -1,5 +1,5 @@
 <?php
-class Deck_Collection extends Rest_Resource {
+class DeckCollection_Resource extends Rest_Resource {
     /* CREATE */
     public function resource_post($request) {
         /* get inputs called "name" and "cards" */
