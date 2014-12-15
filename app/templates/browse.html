@@ -1,0 +1,20 @@
+<!-- Browse Decks Page Template -->
+<script id='view-browse-template' type='text/template'>
+  <div class='page-heading-stripe'>
+    <div class='container'>
+      <h1>
+        <i class='fa fa-book fa-fw'></i>
+        <span class='page-heading-deckTitle'>
+          Popular Decks
+        </span>
+      </h1>
+    </div>
+  </div>
+  <div class='container'>
+    <% _.each(decks, function(deck){ %>
+      <div> 
+        <%= deck.name %>
+      </div>
+    <% }); %>
+  </div>
+</script>
