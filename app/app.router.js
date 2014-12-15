@@ -31,6 +31,7 @@
     },
 
     browse: function() {
+      this.show(new App.Views.Browse);
       console.log('browsin');
     },
 

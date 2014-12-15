@@ -23,7 +23,6 @@
       this.model.set('loaded', false);
       this.render();
     },
-
     loaded: function() {
       this.model.set('loaded', true);
       this.model.get('cards').fetch();

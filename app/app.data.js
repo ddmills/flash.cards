@@ -3,7 +3,7 @@
 
     Card: Backbone.Model.extend({
       idAttribute: 'card_id',
-      initialize() {
+      initialize: function() {
         // console.log(this);
         this.url = this.collection.url + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
         console.log(this.url);
@@ -68,6 +68,15 @@
 
     Decks: Backbone.Model.extend({
       model: App.Models.Deck
+    }),
+
+    BrowseDecks: Backbone.Collection.extend({
+      model: App.Models.Deck,
+      initialize: function(){
+        this.url = 'api/decks/browse/recent/';
+        
+      }
+      
     })
   }
 })(window.App);
