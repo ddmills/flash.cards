@@ -4,9 +4,10 @@
     Card: Backbone.Model.extend({
       idAttribute: 'card_id',
       initialize: function() {
-        // console.log(this);
-        this.url = this.collection.url + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
-        console.log(this.url);
+        if (!this.isNew()) {
+          this.url = this.collection.urlBase + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
+          console.log(this.url);
+        }
         // this.url = '/api/decks' + + '/cards/' + this.id + '?private_key=';
       },
       validate: function(attrs, options) {
@@ -61,8 +62,8 @@
       model: App.Models.Card,
       initialize: function(deck) {
         this.deck = deck;
-        this.url = this.deck.urlRoot + '/' + this.deck.id + '/cards';
-        this.urlRoot = this.url + '?private_key=' + this.deck.private_key;
+        this.urlBase = this.deck.urlRoot + '/' + this.deck.id + '/cards';
+        this.url = this.urlBase + '?private_key=' + this.deck.private_key;
       }
     }),
 
@@ -72,11 +73,9 @@
 
     BrowseDecks: Backbone.Collection.extend({
       model: App.Models.Deck,
-      initialize: function(){
+      initialize: function() {
         this.url = 'api/decks/browse/recent/';
-        
       }
-      
     })
   }
 })(window.App);
