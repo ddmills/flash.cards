@@ -88,7 +88,6 @@
 <script id='view-editor-card-template' type='text/template'>
   <div class='row'>
     <div class='col-sm-6'>
-      <%= front %>
       <div class='card-front-container card-editor-container'>
         <textarea class='card-editor' placeholder='Enter card Front'><%= front %></textarea>
       </div>
@@ -101,7 +100,7 @@
   </div>
   <div class='btn-group btn-group-sm pull-right'>
     <button class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
-    <button class='btn btn-default' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
+    <button data-cardid='<%= card_id %>' class='btn btn-default view-editor-card-delete-btn' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
   </div>
   <div class='clearfix'></div>
 </script>
@@ -110,6 +109,7 @@
   <div class='panel-heading'>
     <i class='fa fa-fw fa-file-o'></i> Cards (<%= cards.length %>)
   </div>
+  <!-- <i class='pull-right fa fa-cog fa-lg fa-fw fa-spin'></i> -->
   <div class='view-editor-cards-container'></div>
 </script>
 

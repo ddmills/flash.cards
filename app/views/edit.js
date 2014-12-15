@@ -5,14 +5,15 @@
   App.Views.Editor = Backbone.View.extend({
     template: _.template($('#view-editor-template').html()),
     initialize: function(id) {
-      this.model = new App.Models.Deck({ id: id });
+      console.log('CREATE A DECK ' + id);
+      this.model = new App.Models.Deck({ deck_id: id });
       this.model.set('loaded', false);
       this.model.on('sync', this.loaded, this);
       this.subViews = {
         'header'  : new App.Views.EditorHeader(this.model),
         'newCard' : new App.Views.EditorNewCard(this.model),
-        'cards'   : new App.Views.EditorCards(this.model.get('cards')),
-        'toolkit' : new App.Views.EditorToolkit(this.model)
+        // 'cards'   : new App.Views.EditorCards(this.model.get('cards')),
+        // 'toolkit' : new App.Views.EditorToolkit(this.model)
       };
 
       this.model.fetch();
@@ -33,8 +34,8 @@
       this.$el.html(this.template(this.model.toJSON()));
       this.subViews.header.$el  = this.$('#view-editor-header');
       this.subViews.newCard.$el = this.$('#view-editor-newCard');
-      this.subViews.cards.$el   = this.$('#view-editor-cards');
-      this.subViews.toolkit.$el = this.$('#view-editor-toolkit');
+      // this.subViews.cards.$el   = this.$('#view-editor-cards');
+      // this.subViews.toolkit.$el = this.$('#view-editor-toolkit');
       _.each(this.subViews, function(v) { v.render(); });
       return this;
     }
@@ -77,7 +78,8 @@
         this.model.get('cards').create(card, { success: function() {
           this.$('.card-editor').disable(false);
           this.$('#view-editor-newCard-btn').disable(false);
-          this.$('.card-editor').val(''),
+          this.$('#view-editor-newCard-front').val(''),
+          this.$('#view-editor-newCard-back').val(''),
           this.$('.card-editor-curtain').removeClass('faded');
           this.$('.card-editor-curtain').html('');
           this.$('#view-editor-newCard-front').focus();
@@ -99,17 +101,19 @@
   App.Views.EditorCard = Backbone.View.extend({
     template: _.template($('#view-editor-card-template').html()),
     initialize: function() {
-      // this.model = model;
-      this.listenTo(this.model, 'all', this.render);
+      this.listenTo(this.model, 'change sync', this.render);
+      this.listenTo(this.model, 'change remove destroy', this.remove);
     },
-    events: {
-
+    remove: function() {
+      console.log('im being removed');
+      this.disable();
+    },
+    disable: function() {
+      console.log('disable this element ' + this.model.get('card_id'));
     },
     render: function() {
-      console.log('rendering card');
       this.$el.html(this.template(this.model.toJSON()));
-      this.$('.card-front-container .card-editor').val(this.model.get('front'));
-      this.delegateEvents();
+      // this.delegateEvents();
       return this;
     }
   });
@@ -120,6 +124,18 @@
     initialize: function(model) {
       this.model = model;
       this.listenToOnce(this.model, 'sync', this.render);
+      this.subViews = {};
+    },
+    events: {
+      'click .view-editor-card-delete-btn': 'remove'
+    },
+    remove: function(e) {
+      // console.log(this.model);
+      var card = this.model.get($(e.target).data('cardid'));
+      // this.subViews[card_id].disable();
+      // console.log(card);
+      this.model.remove(card);
+      // this.model.sync();
     },
     render: function() {
       console.log('renderin');
@@ -132,14 +148,17 @@
       var fragment = document.createDocumentFragment();
       _.each(this.model.toArray().reverse(), function(card) {
         var cardView = new App.Views.EditorCard({
+          parentView: this,
           model: card,
           el: $('<div class="card-editor-bank"></div>')
         });
+        // this.subViews[card.get('card_id')] = card;
         fragment.appendChild(cardView.render().el);
       });
 
       /* append entire fragment */
       this.$('.view-editor-cards-container').html(fragment);
+      this.delegateEvents();
       return this;
     }
   });

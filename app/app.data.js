@@ -1,7 +1,14 @@
 (function(App) {
   App.Models = {
+
     Card: Backbone.Model.extend({
       idAttribute: 'card_id',
+      initialize() {
+        // console.log(this);
+        this.url = this.collection.url + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
+        console.log(this.url);
+        // this.url = '/api/decks' + + '/cards/' + this.id + '?private_key=';
+      },
       validate: function(attrs, options) {
         var errors = [];
         if (attrs.front.length == 0) {
@@ -14,21 +21,27 @@
       }
     }),
 
+
+
     Deck: Backbone.Model.extend({
       defaults: {
-        public: '1',
-        name: '',
-        description: '',
-        cards: {},
+        public      : '1',
+        name        : '',
+        description : '',
+        cards       : {},
       },
-
+      idAttribute: 'deck_id',
       urlRoot: '/api/decks',
-
       initialize: function() {
-        this.private_key = App.Local.hasDeck(this.id);
-        this.set('cards', new App.Collections.Cards);
-        this.get('cards').url = '/api/decks/' + this.id + '/cards?private_key=' + this.private_key;
-        this.listenTo(this, 'sync', this.updateLocal);
+        if (!this.isNew()) {
+          var key = App.Local.hasDeck(this.id);
+          this.owned = false;
+          if (key) {
+            this.owned = true;
+            this.private_key = key;
+            this.set('cards', new App.Collections.Cards(this));
+          }
+        }
       },
 
       validate: function(attrs, options) {
@@ -41,9 +54,16 @@
     })
   }
 
+
+
   App.Collections = {
     Cards: Backbone.Collection.extend({
-      model: App.Models.Card
+      model: App.Models.Card,
+      initialize: function(deck) {
+        this.deck = deck;
+        this.url = this.deck.urlRoot + '/' + this.deck.id + '/cards';
+        this.urlRoot = this.url + '?private_key=' + this.deck.private_key;
+      }
     }),
 
     Decks: Backbone.Model.extend({
