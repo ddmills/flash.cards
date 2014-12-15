@@ -6,9 +6,7 @@
       initialize: function() {
         if (!this.isNew()) {
           this.url = this.collection.urlBase + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
-          console.log(this.url);
         }
-        // this.url = '/api/decks' + + '/cards/' + this.id + '?private_key=';
       },
       validate: function(attrs, options) {
         var errors = [];
@@ -21,8 +19,6 @@
         return errors.length > 0 ? errors : false;
       }
     }),
-
-
 
     Deck: Backbone.Model.extend({
       defaults: {
@@ -54,8 +50,6 @@
       },
     })
   }
-
-
 
   App.Collections = {
     Cards: Backbone.Collection.extend({
