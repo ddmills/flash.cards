@@ -4,9 +4,7 @@
     Card: Backbone.Model.extend({
       idAttribute: 'card_id',
       initialize: function() {
-        if (!this.isNew()) {
-          this.url = this.collection.urlBase + '/' + this.id + '?private_key=' + this.collection.deck.private_key;
-        }
+        this.urlBase = this.collection.urlBase;
       },
       validate: function(attrs, options) {
         var errors = [];
@@ -17,6 +15,23 @@
           errors.push({ name: 'back', message: 'The card back cannot be blank.' });
         }
         return errors.length > 0 ? errors : false;
+      },
+      methodUrl:  function(method) {
+        if(method == 'delete' || method == 'update') {
+          return this.urlBase + '/' + this.attributes.id + '?private_key=' + this.collection.deck.private_key;
+        }else if(method == 'create') {
+          return this.urlBase + '?private_key=' + this.collection.deck.private_key;
+        }else if(method == 'read') {
+          return this.urlBase + '/' + this.attributes.id;
+        }
+        return false;
+      },
+      sync: function(method, model, options) {
+        if (model.methodUrl(method.toLowerCase())) {
+          options = options || {};
+          options.url = model.methodUrl(method.toLowerCase());
+        }
+        Backbone.sync(method, model, options);
       }
     }),
 
@@ -33,11 +48,17 @@
         if (!this.isNew()) {
           var key = App.Local.hasDeck(this.id);
           this.owned = false;
+          this.private_key = false;
           if (key) {
             this.owned = true;
             this.private_key = key;
-            this.set('cards', new App.Collections.Cards(this));
           }
+          var deckInfo = {
+            owned       : this.owned,
+            private_key : this.private_key,
+            id          : this.id
+          };
+          this.set('cards', (new App.Collections.Cards([], this)));
         }
       },
 
@@ -54,10 +75,12 @@
   App.Collections = {
     Cards: Backbone.Collection.extend({
       model: App.Models.Card,
-      initialize: function(deck) {
-        this.deck = deck;
-        this.urlBase = this.deck.urlRoot + '/' + this.deck.id + '/cards';
-        this.url = this.urlBase + '?private_key=' + this.deck.private_key;
+      initialize: function(models, deck) {
+        this.deck    = deck;
+        this.urlBase = '/api/decks/' + this.deck.id + '/cards';
+        this.url     = this.urlBase;// + '?private_key=' + this.private_key;
+        console.log('COLLECTION INIT');
+        console.log(this);
       }
     }),
 

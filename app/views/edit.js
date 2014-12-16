@@ -11,11 +11,10 @@
       this.subViews = {
         'header'  : new App.Views.EditorHeader(this.model),
         'newCard' : new App.Views.EditorNewCard(this.model),
-        'cards'   : new App.Views.EditorCards(this.model.get('cards')),
+        'cards'   : new App.Views.EditorCards({ collection: this.model.get('cards') }),
         'toolkit' : new App.Views.EditorToolkit(this.model)
       };
-
-      this.model.fetch();
+      // this.model.fetch();
     },
 
     loading: function() {
@@ -99,7 +98,9 @@
     template: _.template($('#view-editor-card-template').html()),
     initialize: function() {
       this.listenTo(this.model, 'sync', this.render);
-      this.listenTo(this.model, 'remove destroy', this.remove);
+      this.listenTo(this.model, 'destroy', this.remove);
+      // console.log('cardd');
+      // console.log(this.model);
     },
     remove: function() {
       console.log('im being removed');
@@ -109,6 +110,8 @@
       console.log('disable this element ' + this.model.get('card_id'));
     },
     render: function() {
+      console.log('RENDERING CARD');
+      // console.log(this.model);
       this.$el.html(this.template(this.model.toJSON()));
       // this.delegateEvents();
       return this;
@@ -118,9 +121,8 @@
   /* collection of single-card edit views */
   App.Views.EditorCards = Backbone.View.extend({
     template: _.template($('#view-editor-cards-template').html()),
-    initialize: function(model) {
-      this.model = model;
-      // this.listenToOnce(this.model, 'sync', this.render);
+    initialize: function() {
+      this.listenToOnce(this.collection, 'sync', this.render);
       this.subViews = {};
     },
     events: {
@@ -136,22 +138,29 @@
     },
     render: function() {
       console.log('RENDERING CARDS');
-      this.$el.html(this.template({ cards: this.model.toJSON() }));
+      console.log(this);
+      console.log(this.collection.models);
+      // console.log(this.collection.toJSON());
+      // this.collection.each(function(f) { console.log(f.toJSON()); });
+
+      this.$el.html(this.template({ cards: this.collection.toJSON() }));
 
       /* Create a single fragment instead of immediately appending to the DOM,
        * If we were to append each model in the collection to the DOM, it would
        * cause a reflow each time. Instead, render all models in a fragment
        * first, and then render the fragment once. */
       var fragment = document.createDocumentFragment();
-      _.each(this.model.toArray().reverse(), function(card) {
-        var cardView = new App.Views.EditorCard({
-          parentView: this,
-          model: card,
-          el: $('<div class="card-editor-bank"></div>')
-        });
+      // this.collection.each(function(c) {
+      //   console.log('card: ');
+      //   console.log(c.get('front'));
+        // var cardView = new App.Views.EditorCard({
+        //   parentView: this,
+        //   model: c,
+        //   el: $('<div class="card-editor-bank"></div>')
+        // });
         // this.subViews[card.get('card_id')] = card;
-        fragment.appendChild(cardView.render().el);
-      });
+        // fragment.appendChild(cardView.render().el);
+      // });
 
       /* append entire fragment */
       this.$('.view-editor-cards-container').html(fragment);
