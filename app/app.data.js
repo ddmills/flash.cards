@@ -3,8 +3,12 @@
 
     Card: Backbone.Model.extend({
       idAttribute: 'card_id',
+      defaults: {
+        deck_id: 0
+      },
       initialize: function() {
-        this.urlBase = this.collection.urlBase;
+        this.urlBase = '/api/decks/' + this.get('deck_id') + '/cards',
+        this.private_key = 0;
       },
       validate: function(attrs, options) {
         var errors = [];
@@ -17,12 +21,12 @@
         return errors.length > 0 ? errors : false;
       },
       methodUrl:  function(method) {
-        if(method == 'delete' || method == 'update') {
-          return this.urlBase + '/' + this.attributes.id + '?private_key=' + this.collection.deck.private_key;
-        }else if(method == 'create') {
-          return this.urlBase + '?private_key=' + this.collection.deck.private_key;
-        }else if(method == 'read') {
-          return this.urlBase + '/' + this.attributes.id;
+        if (method == 'delete' || method == 'update') {
+          return this.urlBase + '/' + this.id + '?private_key=' + this.private_key;
+        } else if (method == 'create') {
+          return this.urlBase + '?private_key=' + this.private_key;
+        } else if (method == 'read') {
+          return this.urlBase + '/' + this.id;
         }
         return false;
       },
@@ -61,7 +65,6 @@
           this.set('cards', (new App.Collections.Cards([], this)));
         }
       },
-
       validate: function(attrs, options) {
         var errors = [];
         if (!attrs.name || attrs.name.length == 0) {
@@ -70,7 +73,7 @@
         return errors.length > 0 ? errors : false;
       },
     })
-  }
+  };
 
   App.Collections = {
     Cards: Backbone.Collection.extend({
@@ -79,8 +82,6 @@
         this.deck    = deck;
         this.urlBase = '/api/decks/' + this.deck.id + '/cards';
         this.url     = this.urlBase;// + '?private_key=' + this.private_key;
-        console.log('COLLECTION INIT');
-        console.log(this);
       }
     }),
 
@@ -94,5 +95,5 @@
         this.url = 'api/decks/browse/recent/';
       }
     })
-  }
+  };
 })(window.App);

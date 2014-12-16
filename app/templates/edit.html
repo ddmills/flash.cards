@@ -1,7 +1,6 @@
 <!-- Edit Deck Template -->
 <script id='view-editor-template' type='text/template'>
   <div id='view-editor-header'></div>
-  <% if (loaded) { %>
   <div class='container'>
     <div class='row'>
       <div class='col-md-8'>
@@ -13,7 +12,6 @@
       </div>
     </div>
   </div>
-  <% } %>
 </script>
 
 <!-- Edit Deck Header Template -->
@@ -24,17 +22,17 @@
         <i class='fa fa-book fa-fw'></i>
         Deck:
         <span class='page-heading-deckTitle'>
-        <% if (loaded) { %>
+        <% if (name) { %>
           <%= name %>
         <% } else { %>
           Loading
         <% } %>
         </span>
-        <% if (!loaded) { %>
+        <% if (!name) { %>
         <i class='fa fa-fw fa-cog fa-spin'></i>
         <% } %>
       </h1>
-      <% if (loaded) { %>
+      <% if (name) { %>
       <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
         <button type='button' class='btn btn-default'> <i class='fa fa-share-alt fa-fw'></i> Share </button>
         <button type='button' class='btn btn-default'> <i class='fa fa-font fa-fw'></i> Rename </button>
@@ -43,7 +41,7 @@
       <% } %>
     </div>
   </div>
-  <% if (loaded) { %>
+  <% if (description) { %>
   <div class='container'>
     <% if (description.length > 0) { %>
     <p class='meta-deck-description'> <%= description %> - <a href='#'>edit</a></p>
@@ -89,25 +87,25 @@
   <div class='row'>
     <div class='col-sm-6'>
       <div class='card-front-container card-editor-container'>
-        <textarea class='card-editor' placeholder='Enter card Front'></textarea>
+        <textarea class='card-editor' placeholder='Enter card Front'><%= front %></textarea>
       </div>
     </div>
     <div class='col-sm-6'>
       <div class='card-back-container card-editor-container'>
-        <textarea class='card-editor' placeholder='Enter card back'></textarea>
+        <textarea class='card-editor' placeholder='Enter card back'><%= back %></textarea>
       </div>
     </div>
   </div>
   <div class='btn-group btn-group-sm pull-right'>
     <button class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
-    <button data-cardid='' class='btn btn-default view-editor-card-delete-btn' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
+    <button data-cardid='<%= card_id %>' class='btn btn-default view-editor-card-delete-btn' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
   </div>
   <div class='clearfix'></div>
 </script>
 
 <script id='view-editor-cards-template' type='text/template'>
   <div class='panel-heading'>
-    <i class='fa fa-fw fa-file-o'></i> Cards (<%= cards.length %>)
+    <i class='fa fa-fw fa-file-o'></i> Cards
   </div>
   <!-- <i class='pull-right fa fa-cog fa-lg fa-fw fa-spin'></i> -->
   <div class='view-editor-cards-container'></div>

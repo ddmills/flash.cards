@@ -45,7 +45,7 @@ class Card_Resource extends Rest_Resource {
         where card_id = ? and deck_id = ?
         limit 1', 'is',
         array($card_id, $deck_id));
-      return $con->affected_rows > 0;
+      return true;
     }
 
     throw new Exception('deck_id and private_key did not match', 400);
