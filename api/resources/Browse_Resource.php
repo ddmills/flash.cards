@@ -8,6 +8,7 @@ class Browse_Resource extends Rest_Resource {
     while ($result = $results->fetch_array()) {
       array_push($decks, $result);
     }
+    $con->close();
     return $decks;
   }
 } ?>
