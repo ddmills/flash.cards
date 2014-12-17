@@ -1,4 +1,4 @@
-body {}
+body { font-family: 'Roboto',sans-serif; }
 #main-content { min-height: 420px; }
 #main-footer .container {
   border-top: 1px solid #EEE;
@@ -16,6 +16,7 @@ body {}
   border-bottom: 1px solid #eee;
   position: relative; }
 .page-heading-stripe h1 {
+  font-weight: 400;
   font-size: 20px;
   line-height: 30px;
   margin: 0px;
@@ -26,7 +27,7 @@ body {}
 .navbar { min-height: 48px; }
 .navbar-nav > li > a {
   color: #333;
-  font-weight: bold;
+  font-weight: 500;
   padding-top: 14px;
   padding-bottom: 14px; }
 .navbar-default .navbar-nav > li > a { color: #333; }
@@ -34,7 +35,9 @@ body {}
   color: #333;
   height: 48px;
   padding: 14px; }
-.navbar-default .navbar-brand { color: #444; }
+.navbar-default .navbar-brand {
+  font-weight: 500;
+  color: #444; }
 .navbar-brand > img {
   float: left;
   margin-top: -3px;
@@ -87,9 +90,9 @@ body {}
   box-shadow: 1px 1px 3px #F5F5F5;
   background-attachment: local;
   background-repeat: repeat;
-  line-height: 42px;
-  font-size: 24px;
-  padding: 11px;
+  line-height: 21px;
+  font-size: 15px;
+  padding: 21px;
   border: 1px solid #D4DFE0;
   min-height: 148px;
   width: 100%;
