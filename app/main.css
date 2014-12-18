@@ -3,7 +3,8 @@ body { font-family: 'Roboto',sans-serif; }
 #main-footer .container {
   border-top: 1px solid #EEE;
   margin-top: 60px;
-  padding: 10px 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-size: 11px;
   color: #aaa; }
 .main-navigation {

@@ -6,7 +6,6 @@
   <meta content='width=device-width, initial-scale=1' name='viewport'>
   <title> Quick Flashcards </title>
   <link sizes='16x16, 32x32, 64x64' type='image/x-icon' rel='icon' href='favicon.ico?v=1'></link>
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -50,6 +49,9 @@
   <script src='app/views/edit.js'></script>
   <script src='app/views/browse.js'></script>
   <script src='app/app.router.js'></script>
+
+  <!-- FONTS -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic' rel='stylesheet' type='text/css'>
 
 </body>
 </html>
