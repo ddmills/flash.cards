@@ -20,15 +20,6 @@
       this.model.get('cards').fetch({ reset: true });
     },
 
-    // loading: function() {
-    //   this.model.set('loaded', false);
-    // },
-    // loaded: function() {
-    //   this.model.set('loaded', true);
-    //   this.render();
-    //
-    // },
-
     render: function() {
       console.log('RENDERING OVERALL VIEW');
       this.$el.html(this.template(this.model.toJSON()));
@@ -41,6 +32,7 @@
     }
   });
 
+  /* EDITOR HEADER VIEW */
   App.Views.EditorHeader = Backbone.View.extend({
     template: _.template($('#view-editor-header-template').html()),
     initialize: function() {
@@ -54,6 +46,7 @@
     }
   });
 
+  /* EDITOR NEW-CARD VIEW */
   App.Views.EditorNewCard = Backbone.View.extend({
     template: _.template($('#view-editor-newCard-template').html()),
     events: {
@@ -88,8 +81,9 @@
           }
         });
       } else {
+        var self = this;
         _.each(card.validationError, function(error) {
-          this.$('.card-' + error.name + '-container .card-editor-curtain').html('<span class="curtain-error">' + error.message + '</span>');
+          self.$('.card-' + error.name + '-container .card-editor-curtain').html('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> ' + error.message + '</span>');
         });
       }
     },
@@ -100,41 +94,13 @@
     }
   });
 
-  /* Single card edit */
-  App.Views.EditorCard = Backbone.View.extend({
-    template: _.template($('#view-editor-card-template').html()),
-    initialize: function() {
-      this.listenTo(this.model, 'sync', this.render);
-    },
-    events: {
-      'click .view-editor-card-delete-btn': 'deleteCard'
-    },
-    deleteCard: function() {
-      var self = this;
-      this.$el.slideUp(400, function() {
-        self.model.destroy({ wait: true });
-        self.remove();
-      });
-    },
-    render: function() {
-      console.log('RENDERING CARD');
-      this.$el.html(this.template(this.model.toJSON()));
-      this.delegateEvents();
-      return this;
-    }
-  });
-
-  /* collection of single-card edit views */
+  /* EDITOR ALL-CARDS VIEW */
   App.Views.EditorCards = Backbone.View.extend({
     template: _.template($('#view-editor-cards-template').html()),
     initialize: function() {
-      // this.listenToOnce(this.collection, 'sync', this.render);
       this.listenTo(this.collection, 'add', this.cardAdded);
       this.listenTo(this.collection, 'reset', this.render);
       this.subViews = {};
-    },
-    cardRemoved: function(card) {
-      console.log('delete: ' + card.id);
     },
     cardAdded: function(card) {
       var cardView = new App.Views.EditorCard({
@@ -149,7 +115,6 @@
       el.slideDown(400);
     },
     render: function() {
-      console.log('RENDERING CARDS');
       this.$el.html(this.template({ cards: this.collection.toJSON() }));
       var self = this;
       this.subViews = {};
@@ -178,6 +143,102 @@
     }
   });
 
+  /* EDITOR SINGLE-CARD VIEW */
+  App.Views.EditorCard = Backbone.View.extend({
+    template: _.template($('#view-editor-card-template').html()),
+    initialize: function() {
+      this.listenTo(this.model, 'error', this.serverError);
+      this.templates = {
+        saved: '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
+        saving: '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+        server: '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
+        invalid: _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
+      }
+    },
+    events: {
+      'click .view-editor-card-delete-btn': 'deleteCard',
+      'change .card-front-container .card-editor': 'updateCardFront',
+      'change .card-back-container .card-editor': 'updateCardBack',
+    },
+    invalidated: function(e) {
+      console.log(this.model.validationError);
+      var self = this;
+      _.each (this.model.validationError, function(error) {
+        self.$('.card-' + error.name + '-container .card-editor-curtain').html('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> ' + error.message + '</span>');
+      });
+    },
+    serverError: function(e) {
+      this.$('.card-' + error.name + '-container .card-editor-curtain').html(this.templates.server);
+    },
+    updateCardFront: function(e) {
+      var editor = this.$('.card-front-container .card-editor');
+      var curtain = this.$('.card-front-container .card-editor-curtain');
+      var front = editor.val();
+      var self = this;
+      this.model.set('front', front);
+      if (this.model.isValid()) {
+        curtain.html(self.templates.saving);
+        editor.disable(true);
+        this.model.save([], {
+          success: function() {
+            editor.disable(false);
+            curtain.html(self.templates.saved);
+            setTimeout(function() {
+              self.$('.card-front-container .curtain-saved').fadeOut(1000);
+            }, 1500);
+          }, error: function(e) {
+            this.$('.card-front-container .card-editor-curtain').html(this.templates.server);
+          }});
+      } else {
+        _.each (this.model.validationError, function(error) {
+          if (error.name == 'front') {
+            self.$('.card-front-container .card-editor-curtain').html(self.templates.invalid(error));
+          }
+        });
+      }
+    },
+    updateCardBack: function(e) {
+      var editor = this.$('.card-back-container .card-editor');
+      var curtain = this.$('.card-back-container .card-editor-curtain');
+      var back = editor.val();
+      var self = this;
+      this.model.set('back', back);
+      if (this.model.isValid()) {
+        curtain.html(self.templates.saving);
+        editor.disable(true);
+        this.model.save([], {
+          success: function() {
+            editor.disable(false);
+            curtain.html(self.templates.saved);
+            setTimeout(function() {
+              self.$('.card-back-container .curtain-saved').fadeOut(1000);
+            }, 1500);
+          }, error: function(e) {
+            this.$('.card-back-container .card-editor-curtain').html(this.templates.server);
+          }});
+        } else {
+          _.each (this.model.validationError, function(error) {
+            if (error.name == 'back') {
+              self.$('.card-back-container .card-editor-curtain').html(self.templates.invalid(error));
+            }
+          });
+        }
+    },
+    deleteCard: function() {
+      var self = this;
+      this.$el.slideUp(400, function() {
+        self.model.destroy({ wait: true });
+        self.remove();
+      });
+    },
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      this.delegateEvents();
+      return this;
+    }
+  });
+
+  /* EDITOR TOOLKIT VIEW */
   App.Views.EditorToolkit = Backbone.View.extend({
     template: _.template($('#view-editor-toolkit-template').html()),
     render: function() {

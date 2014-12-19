@@ -26,7 +26,7 @@ class Card_Resource extends Rest_Resource {
         where card_id = ?
         limit 1', 'ssi',
         array($front, $back, $card_id));
-      return Flash_Utils::get_card($con, $card_id);
+      return Flash_Utils::get_card($con, $deck_id, $card_id);
     }
 
     throw new Exception('deck_id and private_key did not match', 400);
