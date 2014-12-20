@@ -149,10 +149,11 @@
     initialize: function() {
       this.listenTo(this.model, 'error', this.serverError);
       this.templates = {
-        saved: '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
-        saving: '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
-        server: '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
-        invalid: _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
+        saved    : '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
+        saving   : '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+        deleting : '<span class="curtain-error">deleting <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+        server   : '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
+        invalid  : _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
       }
     },
     events: {
@@ -226,10 +227,13 @@
     },
     deleteCard: function() {
       var self = this;
-      this.$el.slideUp(400, function() {
-        self.model.destroy({ wait: true });
-        self.remove();
-      });
+      self.$('.card-editor').disable(true);
+      self.$('.card-editor-curtain').html(this.templates.deleting);
+      self.model.destroy({ wait: true, success: function() {
+        self.$el.slideUp(400, function() {
+          self.remove();
+        });
+      }});
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));

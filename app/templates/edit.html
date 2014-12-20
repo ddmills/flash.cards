@@ -45,6 +45,7 @@
   <div class='container'>
     <% if (description.length > 0) { %>
     <p class='meta-deck-description'> <%= description %> - <a href='#'>edit</a></p>
+    <input type='text' class='form-control' value='<%= description %>' maxlength='256'>
     <% } else { %>
       <p class='meta-deck-description'><a href='#'><i class='fa fa-fw fa-plus'></i> add a description</a></p>
     <% } %>
