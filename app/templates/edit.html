@@ -41,23 +41,35 @@
       <% } %>
     </div>
   </div>
-  <% if (description) { %>
+  <% if (name) { %>
   <div class='container'>
     <div class='meta-deck-description'>
-    <% if (description.length > 0) { %>
-      <p> <%= description %> - <button type='button' class='btn btn-link edit-deck-description-btn'>edit</button></p>
-    <% } else { %>
-      <p><button type='button' class='btn btn-link edit-deck-description-btn'><i class='fa fa-fw fa-plus'></i> add a description</button></p>
-    <% } %>
+      <% if (description.length > 0) { %>
+      <p>
+        <%= description %> -
+        <button type='button' class='btn btn-sm btn-link edit-deck-description-btn'>
+          edit
+        </button>
+      </p>
+      <% } else { %>
+      <p>
+        <button type='button' class='btn btn-sm btn-link edit-deck-description-btn'>
+          <i class='fa fa-fw fa-plus'></i> add a description
+        </button>
+      </p>
+      <% } %>
       <div class='edit-deck-description-container'>
         <label for='edit-deck-description'> Description </label>
         <div class='row'>
-          <div class='col-sm-9'>
-            <input type='text' class='form-control' value='<%= description %>' maxlength='256'>
+          <div class='col-sm-8'>
+            <input type='text' class='form-control edit-deck-description' value='<%= description %>' placeholder='Short description of this deck' maxlength='128'>
             </label>
           </div>
-          <div class='col-sm-3'>
-            <button class='btn btn-block btn-default'> Save </button>
+          <div class='col-sm-2'>
+            <button class='btn btn-block btn-default save-deck-description-btn'> Save </button>
+          </div>
+          <div class='col-sm-2'>
+            <button class='btn btn-block btn-link cancel-deck-description-btn'> cancel </button>
           </div>
         </div>
       </div>

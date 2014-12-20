@@ -29,13 +29,6 @@
           return this.urlBase + '/' + this.id;
         }
         return false;
-      },
-      sync: function(method, model, options) {
-        if (model.methodUrl(method.toLowerCase())) {
-          options = options || {};
-          options.url = model.methodUrl(method.toLowerCase());
-        }
-        Backbone.sync(method, model, options);
       }
     }),
 
@@ -48,6 +41,7 @@
       },
       idAttribute: 'deck_id',
       urlRoot: '/api/decks',
+      // urlBase: '/api/decks',
       initialize: function() {
         if (!this.isNew()) {
           var key = App.Local.hasDeck(this.id);
@@ -64,6 +58,16 @@
           };
           this.set('cards', (new App.Collections.Cards([], this)));
         }
+      },
+      methodUrl:  function(method) {
+        if (method == 'delete' || method == 'update') {
+          return this.urlRoot + '/' + this.id + '?private_key=' + this.private_key;
+        } else if (method == 'create') {
+          return this.urlRoot;
+        } else if (method == 'read') {
+          return this.urlRoot + '/' + this.id;
+        }
+        return false;
       },
       validate: function(attrs, options) {
         var errors = [];

@@ -19,6 +19,19 @@ jQuery.fn.extend({
   }
 });
 
+/* Extend default sync method to check for different URLS depending
+ * on the request method. They can be overwritten by adding a
+ * method called "methodUrl" to the model. */
+Backbone.Model.prototype.sync = function(method, model, options) {
+  /* check for existance of URL switching method */
+  if (model.methodUrl(method.toLowerCase())) {
+    options = options || {};
+    options.url = model.methodUrl(method.toLowerCase());
+  }
+  /* call base sync method */
+  Backbone.sync(method, model, options);
+}
+
 /* Method for tearing down a Backbone View */
 Backbone.View.prototype.close = function() {
   /* remove DOM html associated with the View and any events

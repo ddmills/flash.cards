@@ -21,7 +21,7 @@
 
       <div class='form-group'>
         <label for='deck-description'>Description <span class='note'>(optional)</span> </label>
-        <input type='text' id='deck-description' maxlength='256' class='form-control' name='description' placeholder='Description'>
+        <input type='text' id='deck-description' maxlength='128' class='form-control' name='description' placeholder='Short description of this deck'>
         <span class='help-block'></span>
       </div>
 
@@ -39,6 +39,44 @@
           <input type='radio' name='public' value='0' disabled> <i class='fa fa-fw fa-lock'></i> Private
         </label>
         <p class="help-block">You choose who can view or edit this deck. Currently unavailable.</p>
+      </div>
+
+      <hr></hr>
+
+      <div class='form-group'>
+        <div class='row'>
+          <div class='col-sm-3'>
+          <label> State </label>
+            <select class='form-control'>
+              <option value='Iowa'> Iowa </option>
+              <option value='Wisconsin'> Wisconsin </option>
+              <option value='Iowa'> Iowa </option>
+              <option value='Iowa'> Iowa </option>
+            </select>
+          </div>
+          <div class='col-sm-3'>
+            <label> School </label>
+            <select class='form-control'>
+              <option value='Iowa'> Iowa State University </option>
+              <option value='Wisconsin'> Wisconsin </option>
+              <option value='Iowa'> Iowa </option>
+              <option value='Iowa'> Iowa </option>
+            </select>
+          </div>
+          <div class='col-sm-3'>
+            <label> Topic </label>
+            <select class='form-control'>
+              <option value='Literature'> Literature </option>
+              <option value='Wisconsin'> Wisconsin </option>
+              <option value='Iowa'> Iowa </option>
+              <option value='Iowa'> Iowa </option>
+            </select>
+          </div>
+          <div class='col-sm-3'>
+          <label> Class </label>
+            <input type='text' class='form-control'>
+          </div>
+        </div>
       </div>
 
       <hr></hr>

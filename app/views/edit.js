@@ -7,21 +7,17 @@
     initialize: function(id) {
       this.model = new App.Models.Deck({ deck_id: id });
       this.model.set('loaded', false);
-      // this.listenToOnce(this.model, 'sync', this.loaded);
-
       this.subViews = {
         'header'  : new App.Views.EditorHeader({ model: this.model }),
         'newCard' : new App.Views.EditorNewCard({ model: this.model }),
         'cards'   : new App.Views.EditorCards({ collection: this.model.get('cards') }),
         'toolkit' : new App.Views.EditorToolkit({ model: this.model })
       };
-
       this.model.fetch({ reset: true });
       this.model.get('cards').fetch({ reset: true });
     },
 
     render: function() {
-      console.log('RENDERING OVERALL VIEW');
       this.$el.html(this.template(this.model.toJSON()));
       this.subViews.header.$el  = this.$('#view-editor-header');
       this.subViews.newCard.$el = this.$('#view-editor-newCard');
@@ -39,10 +35,27 @@
       this.listenToOnce(this.model, 'sync', this.render);
     },
     events: {
-      'click .edit-deck-description-btn': 'editDescription'
+      'click .edit-deck-description-btn'   : 'editDescription',
+      'click .save-deck-description-btn'   : 'saveDescription',
+      'click .cancel-deck-description-btn' : 'cancelDescription'
     },
     editDescription: function(e) {
       this.$('.meta-deck-description').addClass('open');
+    },
+    saveDescription: function(e) {
+      var self = this;
+      this.model.set('description', this.$('.edit-deck-description').val());
+      this.$('.edit-deck-description').disable(true);
+      this.$('.save-deck-description-btn').disable(true);
+      this.$('.cancel-deck-description-btn').disable(true);
+      this.$('.save-deck-description-btn').html('Saving <i class="fa fa-cog fa-fw fa-spin"></i>');
+      this.model.save([], { success: function() {
+        self.render();
+      }});
+    },
+    'cancelDescription': function(e) {
+      this.$('.meta-deck-description').removeClass('open');
+      this.$('.edit-deck-description').val(this.model.get('description'));
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));

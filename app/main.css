@@ -66,6 +66,7 @@ body { font-family: 'Roboto',sans-serif; }
   margin-top: 5px;
   margin-bottom: 10px; }
 .meta-deck-description.open p { display: none; }
+.meta-deck-description p .btn { padding: 0; }
 .meta-deck-description p {
   display: block;
   margin-bottom: 20px;
@@ -75,7 +76,8 @@ body { font-family: 'Roboto',sans-serif; }
 .edit-deck-description-container {
   display: none;
   margin-bottom: 20px; }
-.meta-deck-description.open .edit-deck-description-container { display: block; }
+.meta-deck-description.open
+.edit-deck-description-container { display: block; }
 
 .radio-privacy > label {
   font-size: 16px; }
