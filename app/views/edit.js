@@ -38,8 +38,13 @@
     initialize: function() {
       this.listenToOnce(this.model, 'sync', this.render);
     },
+    events: {
+      'click .edit-deck-description-btn': 'editDescription'
+    },
+    editDescription: function(e) {
+      this.$('.meta-deck-description').addClass('open');
+    },
     render: function() {
-      console.log('RENDER HEADER');
       this.$el.html(this.template(this.model.toJSON()));
       this.delegateEvents();
       return this;
@@ -75,7 +80,6 @@
             this.$('#view-editor-newCard-btn').disable(false);
             this.$('#view-editor-newCard-front').val(''),
             this.$('#view-editor-newCard-back').val(''),
-            this.$('.card-editor-curtain').removeClass('faded');
             this.$('.card-editor-curtain').html('');
             this.$('#view-editor-newCard-front').focus();
           }
@@ -104,12 +108,11 @@
     },
     cardAdded: function(card) {
       var cardView = new App.Views.EditorCard({
-        parentView: this,
         model: card,
         el: $('<div class="card-editor-bank"></div>')
       });
       this.subViews[card.id] = cardView;
-      var el = cardView.$el;
+      var el = cardView.render().$el;
       el.hide();
       this.$('.view-editor-cards-container').prepend(el);
       el.slideDown(400);
@@ -128,7 +131,6 @@
       _.each(this.collection.toArray().reverse(), function(card) {
         card.private_key = self.collection.deck.private_key;
         var cardView = new App.Views.EditorCard({
-          parentView: self,
           model: card,
           el: $('<div class="card-editor-bank"></div>')
         });

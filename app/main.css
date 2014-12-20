@@ -65,12 +65,17 @@ body { font-family: 'Roboto',sans-serif; }
   display: block;
   margin-top: 5px;
   margin-bottom: 10px; }
-.meta-deck-description {
+.meta-deck-description.open p { display: none; }
+.meta-deck-description p {
   display: block;
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
   word-wrap: break-word; }
+.edit-deck-description-container {
+  display: none;
+  margin-bottom: 20px; }
+.meta-deck-description.open .edit-deck-description-container { display: block; }
 
 .radio-privacy > label {
   font-size: 16px; }
