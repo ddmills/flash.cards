@@ -34,9 +34,15 @@
       </h1>
       <% if (name) { %>
       <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
-        <button type='button' class='btn btn-default'> <i class='fa fa-share-alt fa-fw'></i> Share </button>
-        <button type='button' class='btn btn-default'> <i class='fa fa-font fa-fw'></i> Rename </button>
-        <button type='button' class='btn btn-default'> <i class='fa fa-trash fa-fw'></i> Delete </button>
+        <button type='button' class='btn share-deck-btn btn-default'>
+          <i class='fa fa-share-alt fa-fw'></i> Share
+        </button>
+        <button type='button' class='btn rename-deck-btn btn-default'>
+          <i class='fa fa-font fa-fw'></i> Rename
+        </button>
+        <button type='button' class='btn delete-deck-btn btn-default'>
+          <i class='fa fa-trash fa-fw'></i> Delete
+        </button>
       </div>
       <% } %>
     </div>
@@ -46,7 +52,7 @@
     <div class='meta-deck-description'>
       <% if (description.length > 0) { %>
       <p>
-        <%= description %> -
+        <%= description %> &#8212;
         <button type='button' class='btn btn-sm btn-link edit-deck-description-btn'>
           edit
         </button>
@@ -73,6 +79,10 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class='alert alert-warning'>
+      <a href='#' class='close' data-dismiss='alert'>&times;</a>
+      <i class='fa fa-fw fa-warning'></i> <strong> Warning! </strong> This deck is not associated with an account. If you clear your cookies or try to edit this deck from another device, it will not work. <a href='#'>Create an account now</a> to access your deck from anywhere.
     </div>
   </div>
   <% } %>

@@ -7,6 +7,7 @@ body { font-family: 'Roboto',sans-serif; }
   padding-bottom: 10px;
   font-size: 11px;
   color: #aaa; }
+.panel-default > .panel-heading { background-image: url("../assets/img/nz.gif"); }
 .main-navigation {
   background-image: url("../assets/img/nz.gif");
   background-color: #F5F5F5;

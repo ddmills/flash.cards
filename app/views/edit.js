@@ -35,12 +35,21 @@
       this.listenToOnce(this.model, 'sync', this.render);
     },
     events: {
+      'click .rename-deck-btn'             : 'renameDeck',
+      'click .delete-deck-btn'             : 'deleteDeck',
       'click .edit-deck-description-btn'   : 'editDescription',
       'click .save-deck-description-btn'   : 'saveDescription',
-      'click .cancel-deck-description-btn' : 'cancelDescription'
+      'click .cancel-deck-description-btn' : 'cancelDescription',
+    },
+    renameDeck: function(e) {
+
+    },
+    deleteDeck: function(e) {
+
     },
     editDescription: function(e) {
       this.$('.meta-deck-description').addClass('open');
+      this.$('.edit-deck-description').focus();
     },
     saveDescription: function(e) {
       var self = this;
