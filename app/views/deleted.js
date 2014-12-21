@@ -1,4 +1,7 @@
 (function(App) {
+  /*******************************************
+   *  DELETED DECK VIEW                      *
+   *******************************************/
   App.Views.Deleted = Backbone.View.extend({
     template: _.template($('#view-deleted-template').html()),
     render: function() {

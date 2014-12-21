@@ -11,7 +11,8 @@
         'header'  : new App.Views.EditorHeader({ model: this.model }),
         'newCard' : new App.Views.EditorNewCard({ model: this.model }),
         'cards'   : new App.Views.EditorCards({ collection: this.model.get('cards') }),
-        'toolkit' : new App.Views.EditorToolkit({ model: this.model })
+        'toolkit' : new App.Views.EditorToolkit({ model: this.model }),
+        'warning' : new App.Views.EditorWarning()
       };
       this.model.fetch({ reset: true, error: function() {
         App.Router.navigate('deleted', { trigger: true });
@@ -25,6 +26,7 @@
       this.subViews.newCard.$el = this.$('#view-editor-newCard');
       this.subViews.cards.$el   = this.$('#view-editor-cards');
       this.subViews.toolkit.$el = this.$('#view-editor-toolkit');
+      this.subViews.warning.$el = this.$('#view-editor-warning');
       _.each(this.subViews, function(v) { v.render(); });
       return this;
     }
@@ -39,17 +41,50 @@
     events: {
       'click .rename-deck-btn'             : 'renameDeck',
       'click .delete-deck-btn'             : 'deleteDeck',
+      'click .save-deck-title-btn'         : 'saveTitle',
+      'click .cancel-deck-title-btn'       : 'cancelTitle',
+      'keyup .edit-deck-title'             : 'validateTitle',
       'click .edit-deck-description-btn'   : 'editDescription',
       'click .save-deck-description-btn'   : 'saveDescription',
       'click .cancel-deck-description-btn' : 'cancelDescription',
     },
     renameDeck: function(e) {
-
+      this.$('.meta-deck-title').addClass('open');
+      this.$('.edit-deck-title').focus();
+    },
+    validateTitle: function(e) {
+      var newName = this.$('.edit-deck-title').val();
+      if (newName.length <= 0 || newName.length > 32) {
+        this.$('.save-deck-title-btn').disable(true);
+        this.$('.save-deck-title-btn').html('Invalid <i class="fa fa-warning fa-fw"></i>');
+      } else {
+        this.$('.save-deck-title-btn').disable(false);
+        this.$('.save-deck-title-btn').html('Save');
+      }
+    },
+    saveTitle: function(e) {
+      var self = this;
+      var newName = this.$('.edit-deck-title').val();
+      if (newName.length > 0) {
+        this.model.set('name', newName);
+        this.$('.edit-deck-title').disable(true);
+        this.$('.save-deck-title-btn').disable(true);
+        this.$('.cancel-deck-title-btn').disable(true);
+        this.$('.save-deck-title-btn').html('Saving <i class="fa fa-cog fa-fw fa-spin"></i>');
+        this.model.save([], { success: function() {
+          self.render();
+        }});
+      }
+    },
+    cancelTitle: function(e) {
+      this.$('.meta-deck-title').removeClass('open');
+      this.$('.edit-deck-title').val(this.model.get('name'));
     },
     deleteDeck: function(e) {
       var c = confirm('Are you really sure you want to delete this deck? It cannot be undone.');
       if (c) {
         this.model.destroy();
+        App.Local.deleteDeck(this.model.id);
         App.Router.navigate('deleted', { trigger: true });
       }
     },
@@ -269,6 +304,14 @@
       this.$el.html(this.template(this.model.toJSON()));
       this.delegateEvents();
       return this;
+    }
+  });
+
+  /* EDITOR WARNING VIEW */
+  App.Views.EditorWarning = Backbone.View.extend({
+    template: _.template($('#view-editor-warning-template').html()),
+    render: function() {
+      this.$el.html(this.template());
     }
   });
 

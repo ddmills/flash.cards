@@ -2,6 +2,7 @@
 <script id='view-editor-template' type='text/template'>
   <div id='view-editor-header'></div>
   <div class='container'>
+    <div id='view-editor-warning'></div>
     <div class='row'>
       <div class='col-md-8'>
         <div class='panel panel-default' id='view-editor-newCard'></div>
@@ -17,37 +18,47 @@
 <!-- Edit Deck Header Template -->
 <script id='view-editor-header-template' type='text/template'>
   <div class='page-heading-stripe'>
-    <div class='container'>
-      <h1>
-        <i class='fa fa-book fa-fw'></i>
-        Deck:
-        <span class='page-heading-deckTitle'>
+    <div class='container meta-deck-title'>
+      <div class='editor-deck-title-container'>
+        <h1>
+          <i class='fa fa-book fa-fw'></i>
+          Deck:
+          <span class='page-heading-deckTitle'>
+          <% if (name) { %>
+            <%- name %>
+          <% } else { %>
+            Loading
+          <% } %>
+          </span>
+        </h1>
         <% if (name) { %>
-          <%- name %>
-        <% } else { %>
-          Loading
-        <% } %>
-        </span>
-        <!--
-        <div class='form-inline'>
-          <input type='text' class='form-control' value='<%- name %>'>
+        <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
+          <button type='button' class='btn rename-deck-btn btn-default'>
+            <i class='fa fa-pencil fa-fw'></i> Rename
+          </button>
+          <button type='button' class='btn share-deck-btn btn-default'>
+            <i class='fa fa-share-alt fa-fw'></i> Share
+          </button>
+          <button type='button' class='btn delete-deck-btn btn-default'>
+            <i class='fa fa-trash fa-fw'></i> Delete
+          </button>
         </div>
-        -->
-        <% if (!name) { %>
-        <i class='fa fa-fw fa-cog fa-spin'></i>
         <% } %>
-      </h1>
+      </div>
       <% if (name) { %>
-      <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
-        <button type='button' class='btn share-deck-btn btn-default'>
-          <i class='fa fa-share-alt fa-fw'></i> Share
-        </button>
-        <button type='button' class='btn rename-deck-btn btn-default'>
-          <i class='fa fa-font fa-fw'></i> Rename
-        </button>
-        <button type='button' class='btn delete-deck-btn btn-default'>
-          <i class='fa fa-trash fa-fw'></i> Delete
-        </button>
+      <div class='edit-deck-title-container'>
+        <label for='edit-deck-title'> Name </label>
+        <div class='row'>
+          <div class='col-sm-8'>
+            <input type='text' class='edit-deck-title form-control' value='<%- name %>'>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-default save-deck-title-btn'> Save </button>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-link cancel-deck-title-btn'> Cancel </button>
+          </div>
+        </div>
       </div>
       <% } %>
     </div>
@@ -74,23 +85,25 @@
         <div class='row'>
           <div class='col-sm-8'>
             <input type='text' class='form-control edit-deck-description' value='<%- description %>' placeholder='Short description of this deck' maxlength='128'>
-            </label>
           </div>
           <div class='col-sm-2'>
-            <button class='btn btn-block btn-default save-deck-description-btn'> Save </button>
+            <button type='button' class='btn btn-block btn-default save-deck-description-btn'> Save </button>
           </div>
           <div class='col-sm-2'>
-            <button class='btn btn-block btn-link cancel-deck-description-btn'> cancel </button>
+            <button type='button' class='btn btn-block btn-link cancel-deck-description-btn'> cancel </button>
           </div>
         </div>
       </div>
     </div>
-    <div class='alert alert-warning'>
-      <a href='#' class='close' data-dismiss='alert'>&times;</a>
-      <i class='fa fa-fw fa-warning'></i> <strong> Warning! </strong> This deck is not associated with an account. If you clear your cookies or try to edit this deck from another device, it will not work. <a href='#'>Create an account now</a> to access your deck from anywhere.
-    </div>
   </div>
   <% } %>
+</script>
+
+<script id='view-editor-warning-template' type='text/template'>
+  <div class='alert alert-warning'>
+    <a href='#' class='close' data-dismiss='alert'>&times;</a>
+    <i class='fa fa-fw fa-warning'></i> <strong> Warning! </strong> This deck is not associated with an account. If you clear your cookies or try to edit this deck from another device, it will not work. <a href='#'>Create an account now</a> to access your deck from anywhere.
+  </div>
 </script>
 
 <!-- newCard Edit Template -->

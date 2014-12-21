@@ -79,7 +79,11 @@ body { font-family: 'Roboto',sans-serif; }
   margin-bottom: 20px; }
 .meta-deck-description.open
 .edit-deck-description-container { display: block; }
-
+.meta-deck-title.open .editor-deck-title-container { display: none; }
+.edit-deck-title-container {
+  display: none; }
+.meta-deck-title.open
+.edit-deck-title-container { display: block; }
 .radio-privacy > label {
   font-size: 16px; }
 .radio-privacy > .help-block {
