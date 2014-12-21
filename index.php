@@ -15,6 +15,7 @@
     include 'app/templates/create.html';
     include 'app/templates/restricted.html';
     include 'app/templates/edit.html';
+    include 'app/templates/view.html';
     include 'app/templates/browse.html';
     include 'app/templates/deleted.html';
   ?>
@@ -50,6 +51,7 @@
   <script src='app/views/edit.js'></script>
   <script src='app/views/browse.js'></script>
   <script src='app/views/deleted.js'></script>
+  <script src='app/views/view.js'></script>
   <script src='app/app.router.js'></script>
 
   <!-- FONTS -->

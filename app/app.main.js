@@ -48,6 +48,7 @@ Backbone.View.prototype.close = function() {
 
 /* Router helper method to switch between views */
 Backbone.Router.prototype.show = function(view) {
+  // console.log(this.view());
   /* close current view */
   if (this.view) { this.view.close(); }
   /* set new view and render it */

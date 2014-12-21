@@ -6,7 +6,6 @@
     template: _.template($('#view-editor-template').html()),
     initialize: function(id) {
       this.model = new App.Models.Deck({ deck_id: id });
-      this.model.set('loaded', false);
       this.subViews = {
         'header'  : new App.Views.EditorHeader({ model: this.model }),
         'newCard' : new App.Views.EditorNewCard({ model: this.model }),
@@ -312,6 +311,7 @@
     template: _.template($('#view-editor-warning-template').html()),
     render: function() {
       this.$el.html(this.template());
+      return this;
     }
   });
 

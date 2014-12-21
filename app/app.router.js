@@ -3,6 +3,7 @@
     routes: {
       'create'        : 'create',
       'edit/:id'      : 'edit',
+      'view/:id'      : 'viewer',
       'search/:query' : 'search',
       'browse'        : 'browse',
       'deleted'       : 'deleted',
@@ -27,6 +28,10 @@
       }
     },
 
+    viewer: function(id) {
+      this.show(new App.Views.Viewer(id));
+    },
+
     search: function(query) {
       console.log('you searched for ' + query);
     },
@@ -45,7 +50,7 @@
     },
 
     error: function(path) {
-      console.log('route not handled. ' + path);
+      console.log('Route not handled. ' + path);
     }
   });
 
