@@ -210,20 +210,20 @@
   /* EDITOR SINGLE-CARD VIEW */
   App.Views.EditorCard = Backbone.View.extend({
     template: _.template($('#view-editor-card-template').html()),
+    templates: {
+      saved    : '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
+      saving   : '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+      deleting : '<span class="curtain-error">deleting <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+      server   : '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
+      invalid  : _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
+    },
     initialize: function() {
       this.listenTo(this.model, 'error', this.serverError);
-      this.templates = {
-        saved    : '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
-        saving   : '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
-        deleting : '<span class="curtain-error">deleting <i class="fa fa-fw fa-cog fa-spin"></i></span>',
-        server   : '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
-        invalid  : _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
-      }
     },
     events: {
-      'click .view-editor-card-delete-btn': 'deleteCard',
-      'change .card-front-container .card-editor': 'updateCardFront',
-      'change .card-back-container .card-editor': 'updateCardBack',
+      'click .view-editor-card-delete-btn'        : 'deleteCard',
+      'change .card-front-container .card-editor' : 'updateCardFront',
+      'change .card-back-container .card-editor'  : 'updateCardBack',
     },
     invalidated: function(e) {
       console.log(this.model.validationError);
