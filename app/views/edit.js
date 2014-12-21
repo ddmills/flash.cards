@@ -13,7 +13,9 @@
         'cards'   : new App.Views.EditorCards({ collection: this.model.get('cards') }),
         'toolkit' : new App.Views.EditorToolkit({ model: this.model })
       };
-      this.model.fetch({ reset: true });
+      this.model.fetch({ reset: true, error: function() {
+        App.Router.navigate('deleted', { trigger: true });
+      }});
       this.model.get('cards').fetch({ reset: true });
     },
 
