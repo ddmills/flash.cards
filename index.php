@@ -16,6 +16,7 @@
     include 'app/templates/restricted.html';
     include 'app/templates/edit.html';
     include 'app/templates/browse.html';
+    include 'app/templates/deleted.html';
   ?>
 
   <!-- MAIN CONTENT (populated by router views) -->
@@ -48,6 +49,7 @@
   <script src='app/views/restricted.js'></script>
   <script src='app/views/edit.js'></script>
   <script src='app/views/browse.js'></script>
+  <script src='app/views/deleted.js'></script>
   <script src='app/app.router.js'></script>
 
   <!-- FONTS -->

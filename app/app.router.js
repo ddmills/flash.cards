@@ -5,6 +5,7 @@
       'edit/:id'      : 'edit',
       'search/:query' : 'search',
       'browse'        : 'browse',
+      'deleted'       : 'deleted',
       'local'         : 'local',
       ''              : 'landing',
       '*path'         : 'error',
@@ -37,6 +38,10 @@
 
     local: function() {
       console.log('local decks');
+    },
+
+    deleted: function() {
+      this.show(new App.Views.Deleted);
     },
 
     error: function(path) {

@@ -45,7 +45,11 @@
 
     },
     deleteDeck: function(e) {
-
+      var c = confirm('Are you really sure you want to delete this deck? It cannot be undone.');
+      if (c) {
+        this.model.destroy();
+        App.Router.navigate('deleted', { trigger: true });
+      }
     },
     editDescription: function(e) {
       this.$('.meta-deck-description').addClass('open');
