@@ -36,8 +36,8 @@
           <button type='button' class='btn rename-deck-btn btn-default'>
             <i class='fa fa-pencil fa-fw'></i> Rename
           </button>
-          <button type='button' class='btn share-deck-btn btn-default'>
-            <i class='fa fa-share-alt fa-fw'></i> Share
+          <button type='button' class='btn privacy-deck-btn btn-default'>
+            <i class='fa fa-lock fa-fw'></i> Privacy
           </button>
           <button type='button' class='btn delete-deck-btn btn-default'>
             <i class='fa fa-trash fa-fw'></i> Delete
@@ -176,5 +176,14 @@
       <label> Enter Tags </label>
       <input type='text' class='form-control' placeholder='Western History, Math, Trig'>
     </div>
+    <a href='#view/<%- deck_id %>' class='btn btn-block study-deck-btn btn-default'>
+      <i class='fa fa-eye fa-fw'></i> View this deck
+    </a>
+    <a href='#share/<%- deck_id %>' class='btn btn-block share-deck-btn btn-default'>
+      <i class='fa fa-share-alt fa-fw'></i> Share this deck
+    </a>
+    <a href='#study/<%- deck_id %>' class='btn btn-block study-deck-btn btn-default'>
+      <i class='fa fa-coffee fa-fw'></i> Study this deck
+    </a>
   </div>
 </script>
