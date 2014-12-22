@@ -129,3 +129,18 @@ body { font-family: 'Roboto',sans-serif; }
   z-index: 1; }
 .card-editor-curtain .curtain-success { color: green; }
 .card-editor-curtain .curtain-error { color: rgba(255, 0, 0, 0.69); }
+.card-container {
+  margin-bottom: 20px;
+  padding-bottom: 20px; }
+.card-container:not(:last-child) { border-bottom: 1px dashed #eee; }
+.card-side-container {
+  background-image: url("../assets/img/dotted-21.gif");
+  box-shadow: 1px 1px 3px #F5F5F5;
+  background-attachment: local;
+  background-repeat: repeat;
+  line-height: 21px;
+  font-size: 15px;
+  padding: 21px;
+  border: 1px solid #D4DFE0;
+  min-height: 148px;
+  width: 100%; }

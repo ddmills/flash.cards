@@ -1,16 +1,42 @@
-<!-- Create-a-deck Page Template -->
+<!-- View Deck Template -->
 <script id='view-viewer-template' type='text/template'>
   <div class='page-heading-stripe'>
     <div class='container'>
       <h1>
         <i class='fa fa-book fa-fw'></i>
+        Deck:
         <span class='page-heading-deckTitle'>
-          Loading deck
+          <% if (name) { %>
+            <%- name %>
+          <% } else { %>
+            Loading
+          <% } %>
         </span>
       </h1>
     </div>
   </div>
   <div class='container'>
-    <p> zzz </p>
+    <div class='row'>
+      <div class='col-md-8 view-viewerCards-container'></div>
+      <div class='col-md-4'></div>
+    </div>
   </div>
+  </div>
+</script>
+
+<!-- All Cards View Template -->
+<script id='view-viewer-cards-template' type='text/template'>
+  <p class='note'> This deck contains <%- cards.length %> cards. </p>
+  <% _.each(cards, function(card) { %>
+  <div class='card-container'>
+    <div class='row'>
+      <div class='col-sm-6'>
+        <div class='card-side-container'><%- card.front %></div>
+      </div>
+      <div class='col-sm-6'>
+        <div class='card-side-container'><%- card.back %></div>
+      </div>
+    </div>
+  </div>
+  <% }); %>
 </script>
