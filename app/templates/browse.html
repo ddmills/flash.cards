@@ -5,7 +5,7 @@
       <h1>
         <i class='fa fa-wheelchair fa-fw'></i>
         <span class='page-heading-deckTitle'>
-          Popular Decks
+          Newest Decks
         </span>
       </h1>
         <form class="form-inline pull-right" role="form">
@@ -16,9 +16,6 @@
   </div>
   <div class='container'>
       <div class="row">
-        <div class="col-md-4">
-          <div class='panel panel-default' id='view-browse-sidebar'></div>
-        </div>
         <div class="col-md-8">
           <div class="row">
             <div class='panel panel-default' id='view-browse-toolbar'></div>
@@ -27,39 +24,70 @@
             <div class='panel panel-default' id='view-browse-results'></div>
           </div>
         </div>
+        <div class="col-md-4">
+          <div class='panel panel-default' id='view-browse-sidebar'></div>
+        </div>
       </div>
 
     
   </div>
 </script>
 
-
+<!-- Browse Toolbar Page Template -->
 <script id="view-browse-toolbar-template" type="text/template">
+  <div class="panel-body">
+    <form class="form-inline">
+      <select class="form-control">
+        <option>School</option>
+        <option>Class</option>
 
-
+      </select>
+      <input class="form-control"/>
+      <button class="pull-right btn btn-default">Filter</button>
+    </form>
+  </div>
 </script>
-
+<!-- Browse Sidebar Page Template -->
 <script id="view-browse-sidebar-template" type="text/template">
 
 
 
 </script>
-
+<!-- Browse Results Page Template -->
 <script id="view-browse-results-template" type="text/template">
-<div class="panel-body">
-<% _.each(decks, function(deck){ %>
-  <div> 
-    <h3><%= deck.deck_id %>: <%= deck.name %></h3>
-    <p><%= deck.description %></p>
-    <p><%= deck.created %></p>
-    <hr/>
-  </div>
-<% }); %>
-</div>
-</script>
 
+
+<div class="view-browse-results-container">
+
+</div>
+
+<div class="panel-footer">
+  <p> hello </p>
+</div>
+
+
+</script>
+<!-- Result partial Template -->
 <script id="view-browse-result-template" type="text/template">
 
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-12">
+        <h5> <%- name %></h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p> <%- description %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 browse-view-button">
+    <a href="#view/<%- deck_id %>"class="btn btn-default btn-block">View</a>
+  </div>
+</div>
 
 
 </script>

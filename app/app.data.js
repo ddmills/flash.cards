@@ -95,8 +95,8 @@
 
     BrowseDecks: Backbone.Collection.extend({
       model: App.Models.Deck,
+      url: 'api/decks/browse/recent/',
       initialize: function() {
-        this.url = 'api/decks/browse/recent/';
       }
     })
   };
