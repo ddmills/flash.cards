@@ -1,6 +1,6 @@
 <?php session_start(); ?>
-<?php require_once ('core/mysqli-wrapper/mywrap.php'); ?>
-<?php require_once ('core/User.php'); ?>
+<?php require_once ('core/lib/mysqli-wrapper/mywrap.php'); ?>
+<?php require_once ('core/lib/User_Manager.php'); ?>
 <!doctype html>
 <html lang='en'>
 <head>

@@ -236,10 +236,10 @@
       this.$('.card-' + error.name + '-container .card-editor-curtain').html(this.templates.server);
     },
     updateCardFront: function(e) {
-      var editor = this.$('.card-front-container .card-editor');
+      var editor  = this.$('.card-front-container .card-editor');
       var curtain = this.$('.card-front-container .card-editor-curtain');
-      var front = editor.val();
-      var self = this;
+      var front   = editor.val();
+      var self    = this;
       this.model.set('front', front);
       if (this.model.isValid()) {
         curtain.html(self.templates.saving);
@@ -263,10 +263,10 @@
       }
     },
     updateCardBack: function(e) {
-      var editor = this.$('.card-back-container .card-editor');
+      var editor  = this.$('.card-back-container .card-editor');
       var curtain = this.$('.card-back-container .card-editor-curtain');
-      var back = editor.val();
-      var self = this;
+      var back    = editor.val();
+      var self    = this;
       this.model.set('back', back);
       if (this.model.isValid()) {
         curtain.html(self.templates.saving);
