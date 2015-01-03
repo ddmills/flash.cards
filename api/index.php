@@ -4,8 +4,9 @@ date_default_timezone_set("America/Chicago");
 
 /* Include the API library */
 require_once('lib/lightweight-rest/Rest_Api.php');
-require_once('../core/lib/mysqli-wrapper/mywrap.php');
+require_once('lib/mysqli-wrapper/mywrap.php');
 require_once('lib/Flash_Utils.php');
+require_once('lib/User_Manager.php');
 
 /* Create a new API with resources located in given folder */
 $api = new Rest_Api('resources/');
