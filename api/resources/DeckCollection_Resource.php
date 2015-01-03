@@ -24,7 +24,7 @@ class DeckCollection_Resource extends Rest_Resource {
       }
     }
 
-    $con = new Connection();
+    $con = new mywrap_con();
 
     $con->run('insert into decks
       (private_key, name, description)
@@ -44,7 +44,7 @@ class DeckCollection_Resource extends Rest_Resource {
     /* retrieve given list of decks, otherwise retrieve last 10 */
     $deck_ids = explode(',', $request->inputs->requires('deck_ids'));
     $count  = count($deck_ids);
-    $con    = new Connection();
+    $con    = new mywrap_con();
 
     if ($count) {
       $sql    = 'select name, description, deck_id from decks where';
@@ -68,7 +68,7 @@ class DeckCollection_Resource extends Rest_Resource {
 
   /* UPDATE */
   public function resource_put($request) {
-    $con = new Connection();
+    $con = new mywrap_con();
 
     /* requires all four inputs to edit a deck */
     $name        = $request->inputs->requires('name', 'body');
@@ -101,7 +101,7 @@ class DeckCollection_Resource extends Rest_Resource {
 
   /* DELETE */
   public function resource_delete($request) {
-    $con         = new Connection();
+    $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
     $con->run('

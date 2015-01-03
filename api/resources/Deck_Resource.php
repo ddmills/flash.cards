@@ -23,7 +23,7 @@ class Deck_Resource extends Rest_Resource {
       }
     }
 
-    $con = new Connection();
+    $con = new mywrap_con();
 
     $con->run('insert into decks
       (private_key, name, description)
@@ -41,7 +41,7 @@ class Deck_Resource extends Rest_Resource {
   /* READ */
   public function resource_get($request) {
     $deck_id = $request->inputs->requires('deck_id', 'uri');
-    $con     = new Connection();
+    $con     = new mywrap_con();
     $results = $con->run('select name, description, deck_id from decks where deck_id = ? limit 1', 'i', $deck_id);
     $deck  = $results->fetch_array();
 
@@ -51,7 +51,7 @@ class Deck_Resource extends Rest_Resource {
 
   /* UPDATE */
   public function resource_put($request) {
-    $con = new Connection();
+    $con = new mywrap_con();
 
     /* requires all four inputs to edit a deck */
     $name        = $request->inputs->requires('name', 'body');
@@ -78,7 +78,7 @@ class Deck_Resource extends Rest_Resource {
 
   /* DELETE */
   public function resource_delete($request) {
-    $con         = new Connection();
+    $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
     $con->run('delete from decks where deck_id = ? and private_key = ? limit 1', 'is', array($deck_id, $private_key));

@@ -2,7 +2,7 @@
 class CardCollection_Resource extends Rest_Resource {
   /* UPDATE */
   public function resource_post($request) {
-    $con         = new Connection();
+    $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
     $front       = $request->inputs->requires('front', 'body');
@@ -19,7 +19,7 @@ class CardCollection_Resource extends Rest_Resource {
 
   /* READ */
   public function resource_get($request) {
-    $con     = new Connection();
+    $con     = new mywrap_con();
     $deck_id = $request->inputs->requires('deck_id', 'uri');
     $results = $con->run('select * from cards where deck_id = ?', 'i', $deck_id);
     $cards   = array();

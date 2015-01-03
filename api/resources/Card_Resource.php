@@ -2,7 +2,7 @@
 class Card_Resource extends Rest_Resource {
   /* READ */
   public function resource_get($request) {
-    $con     = new Connection();
+    $con     = new mywrap_con();
     $deck_id = $request->inputs->requires('deck_id', 'uri');
     $card_id = $request->inputs->requires('card_id', 'uri');
     $card    = Flash_Utils::get_card($con, $deck_id, $card_id);
@@ -12,7 +12,7 @@ class Card_Resource extends Rest_Resource {
 
   /* UPDATE */
   public function resource_put($request) {
-    $con         = new Connection();
+    $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
     $card_id     = $request->inputs->requires('card_id', 'uri');
@@ -34,7 +34,7 @@ class Card_Resource extends Rest_Resource {
 
   /* DELETE */
   public function resource_delete($request) {
-    $con         = new Connection();
+    $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $card_id     = $request->inputs->requires('card_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
