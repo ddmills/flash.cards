@@ -5,21 +5,24 @@
   <meta charset='utf-8'>
   <meta name='description' content='free flashcard application' http-equiv='X-UA-Compatible'>
   <meta content='width=device-width, initial-scale=1' name='viewport'>
-  <title> Quick Flashcards </title>
+  <title> Brain Cards &middot; Create Quick and Easy Flashcards </title>
   <link sizes='16x16, 32x32, 64x64' type='image/x-icon' rel='icon' href='favicon.ico?v=1'></link>
 </head>
 <body>
 
   <?php
-    include 'app/navbar.html';
-    include 'app/templates/landing.html';
-    include 'app/templates/create.html';
-    include 'app/templates/restricted.html';
-    include 'app/templates/edit.html';
-    include 'app/templates/view.html';
-    include 'app/templates/browse.html';
-    include 'app/templates/deleted.html';
+    include 'app/templates/template.navbar.html';
+    include 'app/templates/template.landing.html';
+    include 'app/templates/template.create.html';
+    include 'app/templates/template.restricted.html';
+    include 'app/templates/template.edit.html';
+    include 'app/templates/template.view.html';
+    include 'app/templates/template.browse.html';
+    include 'app/templates/template.deleted.html';
   ?>
+
+  <!-- NAVBAR CONTAINER -->
+  <div id='navbar-container'></div>
 
   <!-- MAIN CONTENT (populated by router views) -->
   <div id='main-content'></div>
@@ -46,13 +49,14 @@
   <script src='app/app.main.js'></script>
   <script src='app/app.local.js'></script>
   <script src='app/app.data.js'></script>
-  <script src='app/views/landing.js'></script>
-  <script src='app/views/create.js'></script>
-  <script src='app/views/restricted.js'></script>
-  <script src='app/views/edit.js'></script>
-  <script src='app/views/browse.js'></script>
-  <script src='app/views/deleted.js'></script>
-  <script src='app/views/view.js'></script>
+  <script src='app/views/view.navbar.js'></script>
+  <script src='app/views/view.landing.js'></script>
+  <script src='app/views/view.create.js'></script>
+  <script src='app/views/view.restricted.js'></script>
+  <script src='app/views/view.edit.js'></script>
+  <script src='app/views/view.browse.js'></script>
+  <script src='app/views/view.deleted.js'></script>
+  <script src='app/views/view.view.js'></script>
   <script src='app/app.router.js'></script>
 
   <!-- FONTS -->
