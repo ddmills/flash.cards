@@ -57,4 +57,13 @@ class User_Manager {
     return false;
   }
 
+  public function get_user($id) {
+    $results = $this->con->run('
+      select user_id, name
+      from users
+      where user_id = ?',
+      'i', $id);
+    return $results->fetch_array();
+  }
+
 } ?>
