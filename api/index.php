@@ -22,6 +22,8 @@ $api->map('decks/{num:deck_id}/cards/{num:card_id}/', 'Card_Resource.php');
 $api->map('decks/browse/recent/',                     'Browse_Resource.php');
 
 /* User resources */
+$api->map('users/',               'UserCollection_Resource.php');
+$api->map('users/{num:user_id}/', 'User_Resource.php');
 
 /* Lastly, process the request! */
 $api->process();

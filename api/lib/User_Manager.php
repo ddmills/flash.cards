@@ -37,12 +37,14 @@ class User_Manager {
       where
         email != ?',
       'ssss', $params);
-
     /*
-     * todo:
+     * TODO:
+     *    validate inputs (is email etc)
      *    send email verification?
      *    catch "account already exists"
      */
+
+     return $true;
   }
 
   public function login($email, $pass) {
