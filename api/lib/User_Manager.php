@@ -16,35 +16,64 @@ class User_Manager {
     return $hash;
   }
 
-  public function forgot_pass($email) {
+  /* Determine if an email is valid */
+  public function valid_email($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+  }
+
+  /* Determine if a username is valid */
+  public function valid_name($name) {
+    return ctype_alnum($name);
+  }
+
+  private function send_email_confirm($user) {
 
   }
 
-  public function update_pass($old, $new) {
+  private function send_email_forgot($user) {
 
+  }
 
+  public function forgot_pass($email) {
+    if ($this->valid_email($email)) {
+      // TODO send email
+    }
+    return false;
   }
 
   /* register a new user */
   public function register($email, $pass, $name) {
-    $hash    = $this->hash($pass);
-    $params  = array($email, $hash, $name, $email);
-    $results = $this->con->run('
-      insert into users
-        (email, hash, name)
-      values
-        (?, ?, ?)
-      where
-        email != ?',
-      'ssss', $params);
-    /*
-     * TODO:
-     *    validate inputs (is email etc)
-     *    send email verification?
-     *    catch "account already exists"
-     */
+    /* cannot register user if currently logged in */
+    if ($this->logged_in()) {
+      throw new Exception('Cannot register new user while logged in.', 400);
+    }
 
-     return $true;
+    /* validate the email */
+    if (!$this->valid_email($email)) {
+      throw new Exception('Invalid email address supplied.', 400);
+    }
+
+    /* validate the name */
+    if (!$this->valid_name($name)) {
+      throw new Exception('Invalid username supplied. Alphanumeric names only.', 400);
+    }
+
+    /* register the user */
+    $hash    = $this->hash($pass);
+    $params  = array($email, $hash, $name);
+    $results = $this->con->run('
+      insert into users (email, hash, name)
+      values (?, ?, ?)',
+      'sss', $params);
+
+    /* check for registration success */
+    if ($results->affected_rows()) {
+      $user = $this->login($email, $pass);
+      $this->send_email_confirm($user);
+      return true;
+    }
+
+    throw new Exception('Account with the given email address already exists.', 409);
   }
 
   public function login($email, $pass) {
@@ -54,16 +83,49 @@ class User_Manager {
       $valid = crypt($pass, $user['hash']);
       if ($valid) {
         $_SESSION['user'] = $user;
+        $this->flag_activity($user['user_id']);
+        return $user;
       }
+    }
+    return false;
+  }
+
+  /*
+   * Update when the user was last active
+   */
+  public function flag_activity($user_id) {
+    $results = $this->con->run('
+      update users
+      set activity = NOW()
+      where user_id = ?
+      limit 1',
+      'i', $user_id);
+    return ($results->affected_rows() == 1);
+  }
+
+  /*
+   * Get current user
+   */
+  public function logged_in() {
+    if (isset($_SESSION['user'])) {
+      return $_SESSION['user'];
+    }
+    return false;
+  }
+
+  public function logout() {
+    if ($this->is_logged_in()) {
+
     }
     return false;
   }
 
   public function get_user($id) {
     $results = $this->con->run('
-      select user_id, name
+      select *
       from users
-      where user_id = ?',
+      where user_id = ?
+      limit 1',
       'i', $id);
     return $results->fetch_array();
   }

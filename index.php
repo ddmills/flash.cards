@@ -47,6 +47,7 @@
 
   <!-- APP SCRIPTS -->
   <script src='app/app.main.js'></script>
+  <script src='app/app.user.js'></script>
   <script src='app/app.local.js'></script>
   <script src='app/app.data.js'></script>
   <script src='app/views/view.navbar.js'></script>

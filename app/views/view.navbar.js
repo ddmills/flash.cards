@@ -13,7 +13,20 @@
       'click #modal-register-confirm-btn': 'register',
     },
     register: function() {
-      console.log('confirm registration');
+      var email = $('#modal-register-email').val();
+      var name  = $('#modal-register-name').val();
+      var pass  = $('#modal-register-pass').val();
+      var pass2 = $('#modal-register-pass2').val();
+
+      if (pass == pass2) {
+        App.User.register(email, pass, name, function(data) {
+          console.log('registered');
+          console.log(data);
+        });
+      } else {
+        // TODO show error in modal
+        alert('passwords do not match');
+      }
     },
     show: function() {
       this.$el.modal('show');
