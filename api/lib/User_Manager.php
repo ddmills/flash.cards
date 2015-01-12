@@ -55,28 +55,33 @@ class User_Manager {
 
     /* validate the name */
     if (!$this->valid_name($name)) {
-      throw new Exception('Invalid username supplied. Alphanumeric names only.', 400);
+      throw new Exception('Invalid username supplied. Must be at least one character long. Alphanumeric names only.', 400);
     }
 
     /* register the user */
     $hash    = $this->hash($pass);
     $params  = array($email, $hash, $name);
-    $results = $this->con->run('
-      insert into users (email, hash, name)
-      values (?, ?, ?)',
-      'sss', $params);
-
-    /* check for registration success */
-    if ($results->affected_rows()) {
-      $user = $this->login($email, $pass);
-      $this->send_email_confirm($user);
-      return true;
+    try{
+      $results = $this->con->run('
+        insert into users (email, hash, name)
+        values (?, ?, ?)',
+        'sss', $params);
+    } catch (Exception $e) {
+      throw new Exception('Account with the given email address already exists.', 409);
     }
 
-    throw new Exception('Account with the given email address already exists.', 409);
+    /* log the user in  */
+    $user = $this->login($email, $pass);
+    $this->send_email_confirm($user);
+    return true;
   }
 
   public function login($email, $pass) {
+    /* must log out first */
+    if ($this->logged_in()) {
+      throw new Exception('You are already logged in.', 400);
+    }
+
     $results = $this->con->run('select * from users where email = ? limit 1', 's', $email);
     $user    = $results->fetch_array();
     if ($user) {
