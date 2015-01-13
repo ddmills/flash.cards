@@ -30,6 +30,8 @@
   <!-- MAIN MODALS (populated by bootstrap modals) -->
   <div id='main-modals'></div>
 
+  <div class='container'><pre><?php print_r($_SESSION['user']); ?></pre></div>
+
   <?php include 'app/footer.html'; ?>
 
   <!-- STYLES -->

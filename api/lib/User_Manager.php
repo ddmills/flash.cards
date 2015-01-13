@@ -1,4 +1,6 @@
 <?php
+require_once 'User.php';
+
 class User_Manager {
 
   private $con;
@@ -58,10 +60,10 @@ class User_Manager {
       throw new Exception('Invalid username supplied. Must be at least one character long. Alphanumeric names only.', 400);
     }
 
-    /* register the user */
-    $hash    = $this->hash($pass);
-    $params  = array($email, $hash, $name);
+    /* try to register the user */
     try{
+      $hash    = $this->hash($pass);
+      $params  = array($email, $hash, $name);
       $results = $this->con->run('
         insert into users (email, hash, name)
         values (?, ?, ?)',
@@ -78,17 +80,19 @@ class User_Manager {
 
   public function login($email, $pass) {
     /* must log out first */
-    if ($this->logged_in()) {
+    if ($this->current()) {
       throw new Exception('You are already logged in.', 400);
     }
 
-    $results = $this->con->run('select * from users where email = ? limit 1', 's', $email);
-    $user    = $results->fetch_array();
+    /* get the user by email */
+    $user = $this->get_user_by_email($email);
+
+    /* check if password matches and set session */
     if ($user) {
-      $valid = crypt($pass, $user['hash']);
-      if ($valid) {
+      if ($user->pass_match($pass)) {
         $_SESSION['user'] = $user;
-        $this->flag_activity($user['user_id']);
+        /* flag user activity */
+        $user->flag_activity();
         return $user;
       }
     }
@@ -96,43 +100,55 @@ class User_Manager {
   }
 
   /*
-   * Update when the user was last active
+   * Get current user
    */
-  public function flag_activity($user_id) {
-    $results = $this->con->run('
-      update users
-      set activity = NOW()
-      where user_id = ?
-      limit 1',
-      'i', $user_id);
-    return ($results->affected_rows() == 1);
+  public function current() {
+    return isset($_SESSION['user']) ? $_SESSION['user'] : false;
   }
 
   /*
-   * Get current user
+   * log current user out
+   * @return current user
    */
-  public function logged_in() {
-    if (isset($_SESSION['user'])) {
-      return $_SESSION['user'];
-    }
-    return false;
-  }
-
   public function logout() {
-    if ($this->is_logged_in()) {
-
+    $user = $this->current();
+    if ($user) {
+      unset($_SESSION['user']);
+      return $user;
     }
     return false;
   }
 
-  public function get_user($id) {
-    $results = $this->con->run('
-      select *
-      from users
-      where user_id = ?
-      limit 1',
-      'i', $id);
-    return $results->fetch_array();
+  public function get_user_by_id($id) {
+    try {
+      $results = $this->con->run('
+        select *
+        from users
+        where user_id = ?
+        limit 1',
+        'i', $id);
+      $data = $results->fetch_array();
+      if ($data) {
+        return new User($this->con, $data);
+      }
+    }
+    return false;
+  }
+
+  public function get_user_by_email($email) {
+    try {
+      $results = $this->con->run('
+        select *
+        from users
+        where email = ?
+        limit 1',
+        'i', $id);
+      $data = $results->fetch_array();
+      if ($data) {
+        return new User($this->con, $data);
+      }
+    }
+    return false;
   }
 
 } ?>
