@@ -1,9 +1,6 @@
 <?php
 class User {
 
-  /* mywrap_con object */
-  private $con;
-
   /* user variables */
   public $name;
   public $user_id;
@@ -14,7 +11,7 @@ class User {
   public $premium;
   public $hash;
 
-  public function __construct($con, $data) {
+  public function __construct($data) {
     $this->name     = $data['name'];
     $this->user_id  = $data['user_id'];
     $this->premium  = $data['premium'];
@@ -33,8 +30,8 @@ class User {
   /*
    * Update when the user was last active
    */
-  public function flag_activity() {
-    $results = $this->con->run('
+  public function flag_activity($con) {
+    $results = $con->run('
       update users
       set activity = NOW()
       where user_id = ?
@@ -53,11 +50,7 @@ class User {
     return false;
   }
 
-  /*
-   * Get the json version of this user
-   * @returns json data about the user
-   */
-  public function json() {
+  public function data() {
     $data = array(
       'name'     => $this->name,
       'user_id'  => $this->user_id,
@@ -68,11 +61,20 @@ class User {
 
     /* only include these fields when logged in */
     if ($this->logged_in()) {
-      array_push($data, $email);
-      array_push($data, $verified);
+      $data['email']    = $this->email;
+      $data['verified'] = $this->verified;
     }
 
-    return json_encode($data);
+    return $data;
+  }
+
+  /*
+   * Get the json version of this user
+   * @returns json data about the user
+   */
+  public function json($pretty=false) {
+    $data = $this->data();
+    return $pretty ? json_encode($data, JSON_PRETTY_PRINT) : json_encode($data);
   }
 
 } ?>

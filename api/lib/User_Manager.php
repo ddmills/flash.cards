@@ -46,7 +46,7 @@ class User_Manager {
   /* register a new user */
   public function register($email, $pass, $name) {
     /* cannot register user if currently logged in */
-    if ($this->logged_in()) {
+    if ($this->current()) {
       throw new Exception('Cannot register new user while logged in.', 400);
     }
 
@@ -92,7 +92,7 @@ class User_Manager {
       if ($user->pass_match($pass)) {
         $_SESSION['user'] = $user;
         /* flag user activity */
-        $user->flag_activity();
+        $user->flag_activity($this->con);
         return $user;
       }
     }
@@ -129,24 +129,28 @@ class User_Manager {
         'i', $id);
       $data = $results->fetch_array();
       if ($data) {
-        return new User($this->con, $data);
+        return new User($data);
       }
-    }
+    } catch(Exception $e) {}
     return false;
   }
 
   public function get_user_by_email($email) {
-    try {
-      $results = $this->con->run('
-        select *
-        from users
-        where email = ?
-        limit 1',
-        'i', $id);
-      $data = $results->fetch_array();
-      if ($data) {
-        return new User($this->con, $data);
-      }
+    if ($this->valid_email($email)) {
+      try {
+        $results = $this->con->run('
+          select *
+          from users
+          where email = ?
+          limit 1',
+          's', $email);
+        $data = $results->fetch_array();
+        if ($data) {
+          return new User($data);
+        }
+      } catch(Exception $e) {}
+    } else {
+      throw new Exception('Not a valid email', 400);
     }
     return false;
   }

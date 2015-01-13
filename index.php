@@ -1,3 +1,4 @@
+<?php require_once 'api/lib/User.php'; ?>
 <?php session_start(); ?>
 <!doctype html>
 <html lang='en'>
@@ -30,7 +31,7 @@
   <!-- MAIN MODALS (populated by bootstrap modals) -->
   <div id='main-modals'></div>
 
-  <div class='container'><pre><?php print_r($_SESSION['user']); ?></pre></div>
+  <div class='container'><pre><?php echo($_SESSION['user']->json(true)); ?></pre></div>
 
   <?php include 'app/footer.html'; ?>
 
