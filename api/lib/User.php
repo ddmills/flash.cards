@@ -50,6 +50,10 @@ class User {
     return false;
   }
 
+  /*
+   * Retrieve only the relevant information about this user in array format
+   * @returns Array essential user data
+   */
   public function data() {
     $data = array(
       'name'     => $this->name,

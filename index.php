@@ -40,7 +40,6 @@
     if ($current) {
       echo $current->json(true);
     }
-
     ?></pre>
   </div>
 
@@ -73,7 +72,17 @@
   <script src='app/views/view.deleted.js'></script>
   <script src='app/views/view.view.js'></script>
   <script src='app/app.router.js'></script>
-
+  <script>
+  <?php
+  /* TODO: sanitize!!! */
+  $current = $uman->current();
+  if ($current) {
+    echo 'App.User.Data = ' . $current->json(true);
+  } else {
+    echo 'App.User.Data = {}';
+  }
+  ?>
+  </script>
   <!-- FONTS -->
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic' rel='stylesheet' type='text/css'>
 

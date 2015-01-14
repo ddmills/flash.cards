@@ -1,8 +1,14 @@
 (function(App) {
   App.User = {
     initialize: function() {
-      this.logout();
-      this.login('sw@swag.com', 'swag');
+      // this.logout();
+      // this.login('sw@swag.com', 'swag');
+      if (!this.Data) {
+        this.Data = {};
+      }
+    },
+    isLoggedIn: function() {
+
     },
     register: function(email, pass, name, callback) {
       $.ajax({
@@ -15,7 +21,7 @@
           'name'  : name
         }
       }).done(function(data) {
-        console.log(data);
+        App.User.Data = data;
         if (callback) {
           callback(data);
         }
@@ -37,12 +43,14 @@
       });
     },
     logout: function(callback) {
+      var self = this;
       $.ajax({
         type: 'POST',
         url: 'api/users/?method=logout',
         dataType: 'json'
       }).done(function(data) {
         console.log(data);
+        App.User.Data = {};
         if (callback) {
           callback(data);
         }
