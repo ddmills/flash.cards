@@ -4,7 +4,7 @@ class UserCollection_Resource extends Rest_Resource {
     $method = $request->inputs->requires('method', 'query');
     $con    = new mywrap_con();
     $uman   = new User_Manager($con);
-    
+
     switch ($method) {
       case 'register':
         $email = $request->inputs->requires('email');

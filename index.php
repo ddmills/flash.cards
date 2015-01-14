@@ -1,4 +1,7 @@
-<?php require_once 'api/lib/User.php'; ?>
+<?php require_once 'api/lib/User_Manager.php'; ?>
+<?php require_once 'api/lib/mysqli-wrapper/mywrap.php'; ?>
+<?php $con  = new mywrap_con(); ?>
+<?php $uman = new User_Manager($con); ?>
 <?php session_start(); ?>
 <!doctype html>
 <html lang='en'>
@@ -31,7 +34,15 @@
   <!-- MAIN MODALS (populated by bootstrap modals) -->
   <div id='main-modals'></div>
 
-  <div class='container'><pre><?php echo($_SESSION['user']->json(true)); ?></pre></div>
+  <div class='container'>
+    <pre><?php
+    $current = $uman->current();
+    if ($current) {
+      echo $current->json(true);
+    }
+
+    ?></pre>
+  </div>
 
   <?php include 'app/footer.html'; ?>
 
