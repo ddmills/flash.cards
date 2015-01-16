@@ -6,12 +6,14 @@
       if (!this.Data) {
         this.Data = {};
       }
+      console.log(this.Data);
     },
     isLoggedIn: function() {
-
+      return this.Data.email;
     },
-    register: function(email, pass, name, callback) {
-      $.ajax({
+    register: function(email, pass, name) {
+      var self = this;
+      return $.ajax({
         type: 'POST',
         url: 'api/users/?method=register',
         dataType: 'json',
@@ -20,15 +22,15 @@
           'pass'  : pass,
           'name'  : name
         }
-      }).done(function(data) {
+      }).success(function(data) {
         App.User.Data = data;
-        if (callback) {
-          callback(data);
-        }
+        self.trigger('register');
+        self.trigger('login');
       });
     },
-    login: function(email, pass, callback) {
-      $.ajax({
+    login: function(email, pass) {
+      var self = this;
+      return $.ajax({
         type: 'POST',
         url: 'api/users/?method=login',
         datatype: 'json',
@@ -36,26 +38,23 @@
           'email' : email,
           'pass'  : pass
         }
-      }).done(function(data) {
-        if (callback) {
-          callback(data);
-        }
+      }).success(function(data) {
+        self.trigger('login')
       });
     },
-    logout: function(callback) {
+    logout: function() {
       var self = this;
-      $.ajax({
+      return $.ajax({
         type: 'POST',
         url: 'api/users/?method=logout',
         dataType: 'json'
-      }).done(function(data) {
+      }).success(function(data) {
         console.log(data);
         App.User.Data = {};
-        if (callback) {
-          callback(data);
-        }
+        self.trigger('logout');
       });
     }
   }
+  _.extend(App.User, Backbone.Events);
   App.User.initialize();
 })(window.App);

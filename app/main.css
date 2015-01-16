@@ -146,3 +146,8 @@ body { font-family: 'Roboto',sans-serif; }
   width: 100%; }
 .browse-result-bank { padding: 20px 20px 0px 20px;}
 .browse-result-bank:not(:last-child){ border-bottom: 1px solid #ddd;}
+
+.spinner {
+  margin-left: auto;
+  margin-right: auto;
+  display: block; }

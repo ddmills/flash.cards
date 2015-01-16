@@ -7,12 +7,14 @@
     attributes: {
       'tabindex'        : '-1',
       'role'            : 'dialog',
-      'aria-labelledby' : 'modal-register-label'
+      'aria-labelledby' : 'modal-register-label',
+      'data-backdrop'   : 'static'
     },
     events: {
       'click #modal-register-confirm-btn': 'register',
     },
     register: function() {
+      this.showSpinner();
       var self  = this;
       var email = $('#modal-register-email').val();
       var name  = $('#modal-register-name').val();
@@ -21,14 +23,32 @@
 
       if (pass == pass2) {
         App.User.register(email, pass, name, function(data) {
-          console.log('registered');
-          console.log(data);
+          self.reset();
           self.hide();
         });
       } else {
         // TODO show error in modal
         alert('passwords do not match');
       }
+    },
+    showSpinner: function() {
+      this.$('.modal-footer button').disable(true);
+      this.$('.modal-header button').disable(true);
+      this.$('#modal-register-form').hide();
+      this.$('#modal-register-spinner').show();
+    },
+    hideSpinner: function() {
+      this.$('.modal-footer button').disable(false);
+      this.$('.modal-header button').disable(false);
+      this.$('#modal-register-form').show();
+      this.$('#modal-register-spinner').hide()
+    },
+    reset: function() {
+      this.hideSpinner();
+      this.$('#modal-register-email').val('');
+      this.$('#modal-register-name').val('');
+      this.$('#modal-register-pass').val('');
+      this.$('#modal-register-pass2').val('');
     },
     show: function() {
       this.$el.modal('show');
@@ -38,6 +58,7 @@
     },
     render: function() {
       this.$el.html(this.template());
+      this.$('#modal-register-spinner').hide();
       $('#main-modals').append(this.el);
       this.$el.modal({ 'show': false });
       this.delegateEvents();
@@ -53,19 +74,25 @@
     attributes: {
       'tabindex'        : '-1',
       'role'            : 'dialog',
-      'aria-labelledby' : 'modal-login-label'
+      'aria-labelledby' : 'modal-login-label',
+      'data-backdrop'   : 'static'
     },
     events: {
       'click #modal-login-confirm-btn': 'login',
     },
+
+    reset: function() {
+      this.$('#modal-login-email').val('');
+      this.$('#modal-login-pass').val('');
+    },
+
     login: function() {
       var self  = this;
       var email = $('#modal-login-email').val();
       var pass  = $('#modal-login-pass').val();
 
       App.User.login(email, pass, function(data) {
-        console.log('logged in');
-        console.log(data);
+        self.reset();
         self.hide();
       });
     },
@@ -95,26 +122,53 @@
       role: 'navigation'
     },
     events: {
-      'click #navbar-register-btn': 'showRegisterModal',
-      'click #navbar-login-btn': 'showLoginModal',
-      'click #navbar-logout-btn': 'showLogoutSpinner',
+      'click #navbar-register-btn' : 'showRegisterModal',
+      'click #navbar-login-btn'    : 'showLoginModal',
+      'click #navbar-logout-btn'   : 'showLogoutSpinner',
     },
     initialize: function() {
       this.subViews = {
-        registerModal: new App.Views.RegisterModal,
-        loginModal   : new App.Views.LoginModal
+        registerModal   : new App.Views.RegisterModal,
+        loginModal      : new App.Views.LoginModal
       }
+
+      this.listenTo(App.User, 'login', this.onLogin);
+      this.listenTo(App.User, 'register', this.onRegister);
+      this.listenTo(App.User, 'logout', this.onLogout);
+
     },
     showRegisterModal: function() {
       this.subViews.registerModal.show();
     },
+    onLogout: function() {
+      this.$('#navbar-logout-btn').hide();
+      this.$('#navbar-login-btn').show();
+      this.$('#navbar-register-btn').show();
+
+      this.$('#navbar-logout-btn').disable(true);
+      this.$('#navbar-login-btn').disable(false);
+      this.$('#navbar-register-btn').disable(false);
+    },
+    onRegister: function() {
+      this.subViews.registerModal.hide();
+    },
     showLoginModal: function() {
       this.subViews.loginModal.show();
     },
+    onLogin: function() {
+      this.subViews.loginModal.hide();
+
+      this.$('#navbar-login-btn').hide();
+      this.$('#navbar-register-btn').hide();
+
+      this.$('#navbar-logout-btn').disable(false);
+      this.$('#navbar-login-btn').disable(true);
+      this.$('#navbar-register-btn').disable(true);
+
+      this.$('#navbar-logout-btn').show();
+    },
     showLogoutSpinner: function() {
-      App.User.logout(function() {
-        console.log('logged out successfully');
-      });
+      App.User.logout();
     },
     render: function() {
       /* populate the el */
@@ -123,6 +177,14 @@
       $('#navbar-container').html(this.el);
       /* call render on submodules */
       _.invoke(this.subViews, 'render');
+
+      if (App.User.isLoggedIn()) {
+        this.$('#navbar-login-btn').hide();
+        this.$('#navbar-register-btn').hide();
+      } else {
+        this.$('#navbar-logout-btn').hide();
+      }
+
       return this;
     }
   }));

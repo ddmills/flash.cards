@@ -35,6 +35,8 @@
   <div id='main-modals'></div>
 
   <div class='container'>
+    <br />
+    <p><strong> Raw SESSION data </strong></p>
     <pre><?php
     $current = $uman->current();
     if ($current) {
@@ -61,6 +63,17 @@
   <!-- APP SCRIPTS -->
   <script src='app/app.main.js'></script>
   <script src='app/app.user.js'></script>
+  <script>
+  <?php
+  /* TODO: sanitize!!! */
+  $current = $uman->current();
+  if ($current) {
+    echo 'App.User.Data = ' . $current->json();
+  } else {
+    echo 'App.User.Data = {}';
+  }
+  ?>
+  </script>
   <script src='app/app.local.js'></script>
   <script src='app/app.data.js'></script>
   <script src='app/views/view.navbar.js'></script>
@@ -72,17 +85,7 @@
   <script src='app/views/view.deleted.js'></script>
   <script src='app/views/view.view.js'></script>
   <script src='app/app.router.js'></script>
-  <script>
-  <?php
-  /* TODO: sanitize!!! */
-  $current = $uman->current();
-  if ($current) {
-    echo 'App.User.Data = ' . $current->json(true);
-  } else {
-    echo 'App.User.Data = {}';
-  }
-  ?>
-  </script>
+
   <!-- FONTS -->
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic' rel='stylesheet' type='text/css'>
 
