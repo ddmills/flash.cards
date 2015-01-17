@@ -1,8 +1,6 @@
 (function(App) {
   App.User = {
     initialize: function() {
-      // this.logout();
-      // this.login('sw@swag.com', 'swag');
       if (!this.Data) {
         this.Data = {};
       }

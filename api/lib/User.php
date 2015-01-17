@@ -24,7 +24,11 @@ class User {
 
   /* check if password matches */
   public function pass_match($pass) {
-    return crypt($pass, $this->hash);
+    /* prevent timing attacks with hash_equals */
+    if (function_exists('hash_equals')) {
+      return hash_equals($this->hash, crypt($pass, $this->hash));
+    }
+    return $this->hash == crypt($pass, $this->hash);
   }
 
   /*

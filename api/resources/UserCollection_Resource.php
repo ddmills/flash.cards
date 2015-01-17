@@ -19,7 +19,7 @@ class UserCollection_Resource extends Rest_Resource {
         if ($user) {
           return $user->data();
         }
-        return false;
+        throw new Exception('Invalid Credentials', 401);
         break;
       case 'logout':
         $user = $uman->logout();

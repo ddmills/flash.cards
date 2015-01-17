@@ -41,7 +41,7 @@
       this.$('.modal-footer button').disable(false);
       this.$('.modal-header button').disable(false);
       this.$('#modal-register-form').show();
-      this.$('#modal-register-spinner').hide()
+      this.$('#modal-register-spinner').hide();
     },
     reset: function() {
       this.hideSpinner();
@@ -80,7 +80,18 @@
     events: {
       'click #modal-login-confirm-btn': 'login',
     },
-
+    showSpinner: function() {
+      this.$('.modal-footer button').disable(true);
+      this.$('.modal-header button').disable(true);
+      this.$('#modal-login-form').hide();
+      this.$('#modal-login-spinner').show();
+    },
+    hideSpinner: function() {
+      this.$('.modal-footer button').disable(false);
+      this.$('.modal-header button').disable(false);
+      this.$('#modal-login-form').show();
+      this.$('#modal-login-spinner').hide();
+    },
     reset: function() {
       this.$('#modal-login-email').val('');
       this.$('#modal-login-pass').val('');
@@ -88,12 +99,22 @@
 
     login: function() {
       var self  = this;
+
+      this.showSpinner();
+
       var email = $('#modal-login-email').val();
       var pass  = $('#modal-login-pass').val();
 
-      App.User.login(email, pass, function(data) {
-        self.reset();
-        self.hide();
+      if (email.length == 0) {
+        this.$('#modal-login-error-email').show();
+      }
+
+      if (pass.length == 0) {
+        this.$('#modal-login-error-pass').show();
+      }
+
+      App.User.login(email, pass).error(function(jqXHR, status, err) {
+        console.log(err);
       });
     },
     show: function() {
@@ -188,6 +209,5 @@
       return this;
     }
   }));
-
   App.Views.Navbar.render();
 })(window.App);
