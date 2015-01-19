@@ -52,10 +52,11 @@
             <input type='password' class='form-control' id='modal-register-pass2' placeholder='Reenter Password'>
           </div>
         </div>
+        <div id='modal-register-error' class='alert alert-danger'>Registration failed. <span></span></div>
         <span id='modal-register-spinner'><i class='spinner fa fa-2x fa-fw fa-cog fa-spin'></i></span>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
         <button type='button' class='btn btn-primary' id='modal-register-confirm-btn'>Register</button>
       </div>
     </div>
@@ -81,11 +82,11 @@
             <input type='password' class='form-control' id='modal-login-pass' placeholder='Password'>
           </div>
         </div>
-        <p id='modal-login-error' class='help-block-danger'>Login failed</p>
+        <div id='modal-login-error' class='alert alert-danger'>Login failed</div>
         <span id='modal-login-spinner'><i class='spinner fa fa-2x fa-fw fa-cog fa-spin'></i></span>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
         <button type='button' class='btn btn-primary' id='modal-login-confirm-btn'>Login</button>
       </div>
     </div>
