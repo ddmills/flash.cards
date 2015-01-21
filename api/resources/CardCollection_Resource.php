@@ -2,6 +2,46 @@
 class CardCollection_Resource extends Rest_Resource {
   /* UPDATE */
   public function resource_post($request) {
+    $deck_id = $request->inputs->requires('deck_id', 'uri');
+    $front   = $request->inputs->requires('front', 'body');
+    $back    = $request->inputs->requires('back', 'body');
+
+    $con     = new mywrap_con();
+    $uman    = new User_Manager($con);
+    $user    = $uman->current();
+
+    if ($user) {
+      if (Flash_Utils::verify_owner($con, $deck_id, $user->user_id)) {
+        $con->run('
+          insert into cards
+          (deck_id, front, back)
+          values (?, ?, ?)',
+          'iss',
+          array($deck_id, $front, $back));
+        $card_id = $con->last_id();
+        return Flash_Utils::get_card($con, $deck_id, $card_id);
+      } else {
+
+      }
+    } else {
+      $private_key = $request->inputs->requires('private_key', 'query');
+      if (Flash_Utils::verify_key($con, $deck_id, $private_key)) {
+        $con->run('
+          insert into cards
+          (deck_id, front, back)
+          values (?, ?, ?)',
+          'iss',
+          array($deck_id, $front, $back));
+        $card_id = $con->last_id();
+        return Flash_Utils::get_card($con, $deck_id, $card_id);
+      }
+
+      throw new Exception('deck_id and private_key did not match', 400);
+    }
+
+
+
+
     $con         = new mywrap_con();
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
@@ -10,7 +50,7 @@ class CardCollection_Resource extends Rest_Resource {
 
     if (Flash_Utils::verify_key($con, $deck_id, $private_key)) {
       $con->run('insert into cards (deck_id, front, back) values (?, ?, ?)', 'iss', array($deck_id, $front, $back));
-      $card_id = $con->last_id();
+
       return Flash_Utils::get_card($con, $deck_id, $card_id);
     }
 
