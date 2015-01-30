@@ -20,6 +20,7 @@ class User {
     $this->created  = $data['created'];
     $this->activity = $data['activity'];
     $this->hash     = $data['hash'];
+    $this->decks    = $data['decks'];
   }
 
   /* check if password matches */
@@ -64,7 +65,8 @@ class User {
       'user_id'  => $this->user_id,
       'premium'  => $this->premium,
       'activity' => $this->activity,
-      'created'  => $this->created
+      'created'  => $this->created,
+      'decks'    => $this->decks
     );
 
     /* only include these fields when logged in */

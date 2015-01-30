@@ -26,7 +26,7 @@
           var private_key = data.get('private_key');
           App.Local.addDeck(public_key, private_key);
           data.unset('private_key');
-          App.Router.navigate('edit/' + public_key, { trigger: true });
+          App.Router.navigate('/edit/' + public_key, { trigger: true });
         }});
       } else {
         _.each(this.model.validationError, function(error) {

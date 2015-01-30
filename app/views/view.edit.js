@@ -13,19 +13,28 @@
         'toolkit' : new App.Views.EditorToolkit({ model: this.model }),
         'warning' : new App.Views.EditorWarning()
       };
+      this.listenTo(this.model, 'sync reset', this.checkWarning);
       this.model.fetch({ reset: true, error: function() {
         App.Router.navigate('deleted', { trigger: true });
       }});
       this.model.get('cards').fetch({ reset: true });
     },
-
+    checkWarning: function() {
+      if (!this.model.get('owner')) {
+        this.subViews.warning.$el = this.$('#view-editor-warning');
+        this.subViews.warning.render();
+      } else {
+        this.$('#view-editor-warning').html('');
+      }
+    },
     render: function() {
+      console.log(this.model.toJSON());
       this.$el.html(this.template(this.model.toJSON()));
       this.subViews.header.$el  = this.$('#view-editor-header');
       this.subViews.newCard.$el = this.$('#view-editor-newCard');
       this.subViews.cards.$el   = this.$('#view-editor-cards');
       this.subViews.toolkit.$el = this.$('#view-editor-toolkit');
-      this.subViews.warning.$el = this.$('#view-editor-warning');
+      // this.checkWarning();
       _.each(this.subViews, function(v) { v.render(); });
       return this;
     }
@@ -120,6 +129,7 @@
       'click #view-editor-newCard-btn' : 'addCard'
     },
     addCard: function(e) {
+      var self = this;
       var card = new App.Models.Card({
         front: $('#view-editor-newCard-front').val(),
         back: $('#view-editor-newCard-back').val(),
@@ -138,12 +148,17 @@
         this.model.get('cards').create(card, {
           wait: true,
           success: function() {
-            this.$('.card-editor').disable(false);
-            this.$('#view-editor-newCard-btn').disable(false);
-            this.$('#view-editor-newCard-front').val(''),
-            this.$('#view-editor-newCard-back').val(''),
-            this.$('.card-editor-curtain').html('');
-            this.$('#view-editor-newCard-front').focus();
+            self.$('.card-editor').disable(false);
+            self.$('#view-editor-newCard-btn').disable(false);
+            self.$('#view-editor-newCard-front').val(''),
+            self.$('#view-editor-newCard-back').val(''),
+            self.$('.card-editor-curtain').html('');
+            self.$('#view-editor-newCard-front').focus();
+          },
+          error: function(m, e) {
+            self.$('.card-editor-curtain').html('<span class="curtain-error"><i class="fa fa-fw fa-warning"></i> ' + e.responseJSON.error + '</span>');
+            self.$('.card-editor').disable(false);
+            self.$('#view-editor-newCard-front').focus();
           }
         });
       } else {
@@ -211,10 +226,10 @@
   App.Views.EditorCard = Backbone.View.extend({
     template: _.template($('#view-editor-card-template').html()),
     templates: {
-      saved    : '<span class="curtain-success curtain-saved">Saved <i class="fa fa-fw fa-check"></i></span>',
-      saving   : '<span class="curtain-success">Saving <i class="fa fa-fw fa-cog fa-spin"></i></span>',
+      saved    : '<span class="curtain-success curtain-saved">saved <i class="fa fa-fw fa-check"></i></span>',
+      saving   : '<span class="curtain-success">updating <i class="fa fa-fw fa-cog fa-spin"></i></span>',
       deleting : '<span class="curtain-error">deleting <i class="fa fa-fw fa-cog fa-spin"></i></span>',
-      server   : '<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> The server encountered an error. Please Try again later. </span>',
+      server   : _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= error %> </span>'),
       invalid  : _.template('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> <%= message %></span>')
     },
     initialize: function() {
@@ -232,8 +247,8 @@
         self.$('.card-' + error.name + '-container .card-editor-curtain').html('<span class="curtain-error"> <i class="fa fa-fw fa-warning"></i> ' + error.message + '</span>');
       });
     },
-    serverError: function(e) {
-      this.$('.card-' + error.name + '-container .card-editor-curtain').html(this.templates.server);
+    serverError: function(m, e) {
+      this.$('.card-' + e.responseJSON.error + '-container .card-editor-curtain').html(this.templates.server);
     },
     updateCardFront: function(e) {
       var editor  = this.$('.card-front-container .card-editor');
@@ -251,8 +266,9 @@
             setTimeout(function() {
               self.$('.card-front-container .curtain-saved').fadeOut(1000);
             }, 1500);
-          }, error: function(e) {
-            this.$('.card-front-container .card-editor-curtain').html(this.templates.server);
+          }, error: function(m, e) {
+            self.$('.card-front-container .card-editor-curtain').html(self.templates.server(e.responseJSON));
+            editor.disable(false);
           }});
       } else {
         _.each (this.model.validationError, function(error) {
@@ -278,8 +294,9 @@
             setTimeout(function() {
               self.$('.card-back-container .curtain-saved').fadeOut(1000);
             }, 1500);
-          }, error: function(e) {
-            this.$('.card-back-container .card-editor-curtain').html(this.templates.server);
+          }, error: function(m, e) {
+            self.$('.card-back-container .card-editor-curtain').html(self.templates.server(e.responseJSON));
+            editor.disable(false);
           }});
         } else {
           _.each (this.model.validationError, function(error) {
@@ -293,11 +310,18 @@
       var self = this;
       self.$('.card-editor').disable(true);
       self.$('.card-editor-curtain').html(this.templates.deleting);
-      self.model.destroy({ wait: true, success: function() {
-        self.$el.slideUp(400, function() {
-          self.remove();
-        });
-      }});
+      self.model.destroy({ wait: true,
+        success: function() {
+          self.$el.slideUp(400, function() {
+            self.remove();
+          });
+        },
+        error: function(m, e) {
+          console.log(e);
+          self.$('.card-editor-curtain').html(self.templates.server(e.responseJSON));
+          editor.disable(false);
+        }
+      });
     },
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));

@@ -1,49 +1,11 @@
 <?php
 class Deck_Resource extends Rest_Resource {
-  /* CREATE */
-  public function resource_post($request) {
-    /* get inputs called "name" and "cards" */
-    $name        = $request->inputs->requires('name');
-    $description = $request->inputs->requires('description');
-
-    $key    = '';
-    $strong = false;
-
-    if (function_exists('openssl_random_pseudo_bytes')) {
-      $key = strtr(base64_encode(openssl_random_pseudo_bytes(64, $strong)), '+/=', '---');
-      if ($strong == true) { $key = substr($key, 0, 64); }
-    }
-
-    if ($strong == false) {
-      $characters  = '0123456789';
-      $characters .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-';
-      $characters_len = strlen($characters)-1;
-      for ($i = 0; $i < 64; $i++) {
-        $key .= $characters[mt_rand(0, $characters_len)];
-      }
-    }
-
-    $con = new mywrap_con();
-
-    $con->run('insert into decks
-      (private_key, name, description)
-      values (?, ?, ?)',
-      'sss', array($key, $name, $description));
-
-    $deck_id = $con->last_id();
-
-    $results = $con->run('select * from decks where deck_id = ? limit 1', 'i', $deck_id);
-    $deck = $results->fetch_array();
-
-    return $deck;
-  }
-
   /* READ */
   public function resource_get($request) {
     $deck_id = $request->inputs->requires('deck_id', 'uri');
     $con     = new mywrap_con();
-    $results = $con->run('select name, description, deck_id from decks where deck_id = ? limit 1', 'i', $deck_id);
-    $deck  = $results->fetch_array();
+    $results = $con->run('select name, owner, description, deck_id from decks where deck_id = ? limit 1', 'i', $deck_id);
+    $deck    = $results->fetch_array();
 
     if ($deck) { return $deck; }
     throw new Exception('Deck with given id not found', 404);
@@ -61,24 +23,32 @@ class Deck_Resource extends Rest_Resource {
     $deck = Flash_Utils::get_deck($con, $deck_id);
 
     if ($deck) {
-      if ($deck['owner'] && $deck['owner'] == $user->user_id) {
-        $con->run('
-          update decks
-          set
-            name = ?,
-            description = ?
-          where
-            deck_id = ?
-            and owner = ?',
-          'ssii',
-          array($name, $description, $deck_id, $user->user_id));
+      if ($deck['owner']) {
+        if ($user) {
+          if ($deck['owner'] == $user->user_id) {
+            $con->run('
+              update decks
+              set
+                name = ?,
+                description = ?
+              where
+                deck_id = ?
+                and owner = ?',
+              'ssii',
+              array($name, $description, $deck_id, $user->user_id));
 
-        return array(
-          'deck_id'     => $deck_id,
-          'name'        => $name,
-          'owner'       => $user->user_id,
-          'description' => $description
-        );
+            return array(
+              'deck_id'     => $deck_id,
+              'name'        => $name,
+              'owner'       => $user->user_id,
+              'description' => $description
+            );
+          } else {
+            throw new Exception('This deck does not belong to the user who is currently logged in.', 401);
+          }
+        } else {
+          throw new Exception('You must be logged in to edit this deck.', 401);
+        }
       } else {
         /* This deck is unowned - require a private key */
         $private_key = $request->inputs->requires('private_key', 'query');
@@ -125,9 +95,37 @@ class Deck_Resource extends Rest_Resource {
   /* DELETE */
   public function resource_delete($request) {
     $con         = new mywrap_con();
+    $uman        = new User_Manager($con);
     $deck_id     = $request->inputs->requires('deck_id', 'uri');
     $private_key = $request->inputs->requires('private_key', 'query');
-    $con->run('delete from decks where deck_id = ? and private_key = ? limit 1', 'is', array($deck_id, $private_key));
+    $user        = $uman->current();
+    $deck        = Flash_Utils::get_deck($con, $deck_id);
+
+    if ($deck['owner']) {
+      if ($user) {
+        if (Flash_Utils::verify_owner($con, $deck_id, $user->user_id)) {
+          $con->run('
+            delete from decks
+            where deck_id = ?
+            and owner = ?
+            limit 1', 'is',
+            array($deck_id, $user->user_id));
+          return true;
+        } else{
+          throw new Exception('You must own this deck to delete it', 401);
+        }
+      } else {
+        throw new Exception('You must be logged in to delete this deck', 401);
+      }
+    } else {
+      $private_key = $request->inputs->requires('private_key', 'query');
+      $con->run('
+        delete from decks
+        where deck_id = ?
+        and private_key = ?
+        limit 1', 'is',
+        array($deck_id, $private_key));
+    }
   }
 }
 ?>

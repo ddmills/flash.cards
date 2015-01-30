@@ -5,9 +5,10 @@
         this.Data = {};
       }
       console.log(this.Data);
+      // TODO a list of deck IDS should be returned with the user!
     },
     isLoggedIn: function() {
-      return this.Data.email;
+      return this.Data.user_id;
     },
     register: function(email, pass, name) {
       var self = this;
@@ -51,7 +52,7 @@
         App.User.Data = {};
         self.trigger('logout');
       });
-    }
+    },
   }
   _.extend(App.User, Backbone.Events);
   App.User.initialize();

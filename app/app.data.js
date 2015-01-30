@@ -42,12 +42,12 @@
       defaults: {
         public      : '1',
         name        : '',
+        owner       : '',
         description : '',
         cards       : {},
       },
       idAttribute: 'deck_id',
       urlRoot: '/api/decks',
-      // urlBase: '/api/decks',
       initialize: function() {
         if (!this.isNew()) {
           var key = App.Local.hasDeck(this.id);
@@ -67,6 +67,9 @@
       },
       methodUrl:  function(method) {
         if (method == 'delete' || method == 'update') {
+          if (App.User.isLoggedIn()) {
+            return this.urlRoot + '/' + this.id;
+          }
           return this.urlRoot + '/' + this.id + '?private_key=' + this.private_key;
         } else if (method == 'create') {
           return this.urlRoot;

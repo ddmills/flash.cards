@@ -119,6 +119,23 @@ class User_Manager {
     return false;
   }
 
+  /*
+   * Get all decks associated with user id
+   * @return array of deck_ids
+   */
+  public function get_user_decks($id) {
+    $decks = array();
+    $results = $this->con->run('
+      select deck_id
+      from decks
+      where owner = ?',
+      'i', $id);
+    while ($result = $results->fetch()) {
+      array_push($decks, $result['deck_id']);
+    }
+    return $decks;
+  }
+
   public function get_user_by_id($id) {
     try {
       $results = $this->con->run('
@@ -129,6 +146,7 @@ class User_Manager {
         'i', $id);
       $data = $results->fetch_array();
       if ($data) {
+        $data['decks'] = $this->get_user_decks($id);
         return new User($data);
       }
     } catch(Exception $e) {}
@@ -146,6 +164,7 @@ class User_Manager {
           's', $email);
         $data = $results->fetch_array();
         if ($data) {
+          $data['decks'] = $this->get_user_decks($data['user_id']);
           return new User($data);
         }
       } catch(Exception $e) {}
