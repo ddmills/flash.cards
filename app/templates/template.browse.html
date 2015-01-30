@@ -3,25 +3,25 @@
   <div class='page-heading-stripe'>
     <div class='container'>
       <h1>
-        <i class='fa fa-wheelchair fa-fw'></i>
+        <i class='fa fa-coffee fa-fw'></i>
         <span class='page-heading-deckTitle'>
-          Newest Decks
+          Latest Decks
         </span>
       </h1>
-        <form class="form-inline pull-right" role="form">
-            <input type="text" class="form-control" placeholder="Search Decks">
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+      <form class="form-inline pull-right" role="form">
+        <input type="text" class="form-control" placeholder="Search Decks">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
     </div>
   </div>
   <div class='container'>
     <div class="row">
       <div class="col-sm-8">
-        <div class="row">
+        <!-- <div class="row">
           <div class='panel panel-default' id='view-browse-toolbar'></div>
-        </div>
+        </div> -->
         <div class="row">
-          <div class='panel panel-default' id='view-browse-results'></div>
+          <div id='view-browse-results'></div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div class="col-sm-4 browse-view-button">
-      <a href="#view/<%- deck_id %>"class="btn btn-default btn-block">View</a>
+      <a href="#/view/<%- deck_id %>"class="btn btn-link btn-block">View</a>
     </div>
   </div>
 </script>
