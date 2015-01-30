@@ -101,7 +101,7 @@ class DeckCollection_Resource extends Rest_Resource {
             description = ?
           where
             deck_id = ?
-            and owner = ?'
+            and owner = ?',
           'ssii',
           array($name, $description, $deck_id, $user->user_id));
         return array(
@@ -124,7 +124,7 @@ class DeckCollection_Resource extends Rest_Resource {
               owner = ?
             where
               deck_id = ?
-              and private_key = ?'
+              and private_key = ?',
             'ssiis',
             array($name, $description, $owner, $deck_id, $private_key));
         } else {
@@ -136,7 +136,7 @@ class DeckCollection_Resource extends Rest_Resource {
               description = ?
             where
               deck_id = ?
-              and private_key = ?'
+              and private_key = ?',
             'ssis',
             array($name, $description, $deck_id, $private_key));
         }

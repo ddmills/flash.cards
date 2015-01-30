@@ -26,7 +26,7 @@ class Flash_Utils {
   public static function verify_owner($con, $deck_id, $user_id) {
     $results = $con->run('
       select * from decks
-      where deck_id = ? and user_id = ?
+      where deck_id = ? and owner = ?
       limit 1', 'ii',
       array($deck_id, $user_id));
     return $results->fetch_array();

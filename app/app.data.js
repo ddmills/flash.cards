@@ -22,8 +22,14 @@
       },
       methodUrl:  function(method) {
         if (method == 'delete' || method == 'update') {
+          if (App.User.isLoggedIn()) {
+            return this.urlBase + '/' + this.id;
+          }
           return this.urlBase + '/' + this.id + '?private_key=' + this.private_key;
         } else if (method == 'create') {
+          if (App.User.isLoggedIn()) {
+            return this.urlBase;
+          }
           return this.urlBase + '?private_key=' + this.private_key;
         } else if (method == 'read') {
           return this.urlBase + '/' + this.id;
