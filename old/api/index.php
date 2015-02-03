@@ -1,11 +1,11 @@
 <?php
 /* external libraries  */
-require_once ('../src/php/lib/lightweight-rest/Rest_Api.php');
-require_once ('../src/php/lib/mysqli-wrapper/mywrap.php');
+require_once ('lib/lightweight-rest/Rest_Api.php');
+require_once ('lib/mysqli-wrapper/mywrap.php');
 
 /* local libraries */
-require_once ('../src/php/Flash_Utils.php');
-require_once ('../src/php/User_Manager.php');
+require_once ('lib/Flash_Utils.php');
+require_once ('lib/User_Manager.php');
 
 /* start session (after includes) */
 session_start();

@@ -1,0 +1,189 @@
+<!-- Edit Deck Template -->
+<script id='view-editor-template' type='text/template'>
+  <div id='view-editor-header'></div>
+  <div class='container'>
+    <div id='view-editor-warning'></div>
+    <div class='row'>
+      <div class='col-md-8'>
+        <div class='panel panel-default' id='view-editor-newCard'></div>
+        <div class='panel panel-default' id='view-editor-cards'></div>
+      </div>
+      <div class='col-md-4'>
+        <div class='panel panel-default' id='view-editor-toolkit'></div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- Edit Deck Header Template -->
+<script id='view-editor-header-template' type='text/template'>
+  <div class='page-heading-stripe'>
+    <div class='container meta-deck-title'>
+      <div class='editor-deck-title-container'>
+        <h1>
+          <i class='fa fa-book fa-fw'></i>
+          Deck:
+          <span class='page-heading-deckTitle'>
+          <% if (name) { %>
+            <%- name %>
+          <% } else { %>
+            Loading
+          <% } %>
+          </span>
+        </h1>
+        <% if (name) { %>
+        <div class='btn-group btn-group-sm pull-right' role='group' aria-label='deck options'>
+          <button type='button' class='btn rename-deck-btn btn-default'>
+            <i class='fa fa-pencil fa-fw'></i> Rename
+          </button>
+          <button type='button' class='btn privacy-deck-btn btn-default'>
+            <i class='fa fa-lock fa-fw'></i> Privacy
+          </button>
+          <button type='button' class='btn delete-deck-btn btn-default'>
+            <i class='fa fa-trash fa-fw'></i> Delete
+          </button>
+        </div>
+        <% } %>
+      </div>
+      <% if (name) { %>
+      <div class='edit-deck-title-container'>
+        <label for='edit-deck-title'> Name </label>
+        <div class='row'>
+          <div class='col-sm-8'>
+            <input type='text' class='edit-deck-title form-control' value='<%- name %>'>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-default save-deck-title-btn'> Save </button>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-link cancel-deck-title-btn'> Cancel </button>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <% if (name) { %>
+  <div class='container'>
+    <div class='meta-deck-description'>
+      <% if (description.length > 0) { %>
+      <p>
+        <%- description %> &#8212;
+        <button type='button' class='btn btn-sm btn-link edit-deck-description-btn'>
+          edit
+        </button>
+      </p>
+      <% } else { %>
+      <p>
+        <button type='button' class='btn btn-sm btn-link edit-deck-description-btn'>
+          <i class='fa fa-fw fa-plus'></i> add a description
+        </button>
+      </p>
+      <% } %>
+      <div class='edit-deck-description-container'>
+        <label for='edit-deck-description'> Description </label>
+        <div class='row'>
+          <div class='col-sm-8'>
+            <input type='text' class='form-control edit-deck-description' value='<%- description %>' placeholder='Short description of this deck' maxlength='128'>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-default save-deck-description-btn'> Save </button>
+          </div>
+          <div class='col-sm-2'>
+            <button type='button' class='btn btn-block btn-link cancel-deck-description-btn'> cancel </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</script>
+
+<script id='view-editor-warning-template' type='text/template'>
+  <div class='alert alert-warning'>
+    <a href='#' class='close' data-dismiss='alert'>&times;</a>
+    <i class='fa fa-fw fa-warning'></i> <strong> Warning! </strong> This deck is not associated with an account. If you clear your cookies or try to edit this deck from another device, it will not work. <a href='#'>Create an account now</a> to access your deck from anywhere.
+  </div>
+</script>
+
+<!-- newCard Edit Template -->
+<script id='view-editor-newCard-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-plus'></i> Add Card
+    <div class='pull-right'>
+      <div class='btn-group btn-group-xs'>
+        <button class='btn btn-default' type='button'>A Button</button>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='card-editor-bank'>
+      <div class='col-sm-6'>
+        <div class='card-front-container card-editor-container'>
+          <div class='card-editor-curtain'></div>
+          <textarea id='view-editor-newCard-front' class='card-editor' placeholder='Enter card front'></textarea>
+        </div>
+      </div>
+      <div class='col-sm-6'>
+        <div class='card-back-container card-editor-container'>
+          <div class='card-editor-curtain'></div>
+          <textarea id='view-editor-newCard-back' class='card-editor' placeholder='Enter card back'></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='panel-body'>
+    <button id='view-editor-newCard-btn' type='button' class='btn btn-default btn-block'> Add <i class='fa fa-fw fa-plus'></i> </button>
+  </div>
+</script>
+
+<script id='view-editor-card-template' type='text/template'>
+  <div class='row'>
+    <div class='col-sm-6'>
+      <div class='card-front-container card-editor-container'>
+        <div class='card-editor-curtain'></div>
+        <textarea class='card-editor' placeholder='Enter card Front'><%- front %></textarea>
+      </div>
+    </div>
+    <div class='col-sm-6'>
+      <div class='card-back-container card-editor-container'>
+        <div class='card-editor-curtain'></div>
+        <textarea class='card-editor' placeholder='Enter card back'><%- back %></textarea>
+      </div>
+    </div>
+  </div>
+  <div class='btn-group btn-group-sm pull-right'>
+    <button tabindex='-1' class='btn btn-default' type='button'><i class='fa fa-fw fa-exchange'></i> Swap </button>
+    <button tabindex='-1' data-cardid='<%- card_id %>' class='btn btn-default view-editor-card-delete-btn' type='button'><i class='fa fa-fw fa-trash'></i> Delete </button>
+  </div>
+  <div class='clearfix'></div>
+</script>
+
+<script id='view-editor-cards-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-file-o'></i> Cards
+  </div>
+  <div class='view-editor-cards-container'></div>
+</script>
+
+<script id='view-editor-toolkit-template' type='text/template'>
+  <div class='panel-heading'>
+    <i class='fa fa-fw fa-wrench'></i>
+    Options
+  </div>
+  <div class='panel-body'>
+    <div class='form-group'>
+      <label> Enter Tags </label>
+      <input type='text' class='form-control' placeholder='Western History, Math, Trig'>
+    </div>
+    <a href='#view/<%- deck_id %>' class='btn btn-block study-deck-btn btn-default'>
+      <i class='fa fa-eye fa-fw'></i> View this deck
+    </a>
+    <a href='#share/<%- deck_id %>' class='btn btn-block share-deck-btn btn-default'>
+      <i class='fa fa-share-alt fa-fw'></i> Share this deck
+    </a>
+    <a href='#study/<%- deck_id %>' class='btn btn-block study-deck-btn btn-default'>
+      <i class='fa fa-coffee fa-fw'></i> Study this deck
+    </a>
+  </div>
+</script>
