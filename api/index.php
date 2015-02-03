@@ -19,6 +19,9 @@ $api = new Rest_Api('resources/');
 /* Disable Cross-Origin Resource Sharing (read more at http://enable-cors.org/) */
 $api->cors_enabled(false);
 
+$api->pretty_print(true);
+$api->format_output(true);
+
 /* Card and deck resources */
 $api->map('decks/',                                   'DeckCollection_Resource.php');
 $api->map('decks/{num:deck_id}/',                     'Deck_Resource.php');

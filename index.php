@@ -1,5 +1,5 @@
-<?php require_once 'api/lib/User_Manager.php'; ?>
-<?php require_once 'api/lib/mysqli-wrapper/mywrap.php'; ?>
+<?php require_once 'src/php/User_Manager.php'; ?>
+<?php require_once 'src/php/lib/mysqli-wrapper/mywrap.php'; ?>
 <?php $con  = new mywrap_con(); ?>
 <?php $uman = new User_Manager($con); ?>
 <?php session_start(); ?>
@@ -14,17 +14,6 @@
 </head>
 <body>
 
-  <?php
-    include 'app/templates/template.navbar.html';
-    include 'app/templates/template.landing.html';
-    include 'app/templates/template.create.html';
-    include 'app/templates/template.restricted.html';
-    include 'app/templates/template.edit.html';
-    include 'app/templates/template.view.html';
-    include 'app/templates/template.browse.html';
-    include 'app/templates/template.deleted.html';
-  ?>
-
   <!-- NAVBAR CONTAINER -->
   <div id='navbar-container'></div>
 
@@ -36,7 +25,7 @@
 
   <div class='container'>
     <br />
-    <p><strong> Raw SESSION data </strong></p>
+    <p><strong> H3110 W0R1D </strong></p>
     <pre><?php
     $current = $uman->current();
     if ($current) {
@@ -45,46 +34,13 @@
     ?></pre>
   </div>
 
-  <?php include 'app/footer.html'; ?>
-
   <!-- STYLES -->
-  <link rel='stylesheet' href='assets/css/bootstrap.min.css'></link>
-  <link rel='stylesheet' href='assets/css/font-awesome.min.css'></link>
-  <link rel='stylesheet' href='app/main.css'></link>
+  <link rel='stylesheet' href='src/css/font-awesome.min.css'></link>
+  <link rel='stylesheet' href='src/css/main.css'></link>
 
   <!-- VENDOR SCRIPTS -->
-  <script src='assets/js/jquery.min.js'></script>
-  <script src='assets/js/underscore.min.js'></script>
-  <script src='assets/js/backbone.min.js'></script>
-  <script src='assets/js/backbone.model-binder.min.js'></script>
-  <script src='assets/js/backbone.collection-binder.min.js'></script>
-  <script src='assets/js/bootstrap.min.js'></script>
-
-  <!-- APP SCRIPTS -->
-  <script src='app/app.main.js'></script>
-  <script src='app/app.user.js'></script>
-  <script>
-  <?php
-  /* TODO: sanitize!!! */
-  $current = $uman->current();
-  if ($current) {
-    echo 'App.User.Data = ' . $current->json();
-  } else {
-    echo 'App.User.Data = {}';
-  }
-  ?>
-  </script>
-  <script src='app/app.local.js'></script>
-  <script src='app/app.data.js'></script>
-  <script src='app/views/view.navbar.js'></script>
-  <script src='app/views/view.landing.js'></script>
-  <script src='app/views/view.create.js'></script>
-  <script src='app/views/view.restricted.js'></script>
-  <script src='app/views/view.edit.js'></script>
-  <script src='app/views/view.browse.js'></script>
-  <script src='app/views/view.deleted.js'></script>
-  <script src='app/views/view.view.js'></script>
-  <script src='app/app.router.js'></script>
+  <script src='src/js/lib/jquery.min.js'></script>
+  <script src='src/js/lib/underscore.min.js'></script>
 
   <!-- FONTS -->
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic' rel='stylesheet' type='text/css'>
