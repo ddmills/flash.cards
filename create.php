@@ -21,8 +21,30 @@
     <div class='form-group'>
       <label for='create-deck-description'>Description <span class='form-help'>(optional)</span></label>
       <input id='create-deck-description' class='form-input' type='text' maxlength='128' name='name' placeholder='Short description of this deck'>
-
     </div>
+
+    <hr></hr>
+
+    <div class='form-group form-group-radio'>
+      <label>
+        <input type='radio' name='public' value='1' checked>
+        <i class='fa fa-fw fa-unlock'></i> Public<br />
+        <span class='form-help'>
+          Anyone can view this deck.
+        </span>
+      </label>
+      <label>
+        <input type='radio' name='public' value='0' disabled>
+        <i class='fa fa-fw fa-lock'></i> Private<br />
+        <span class='form-help'>
+          You choose who can view or edit this deck. Currently unavailable.
+        </span>
+      </label>
+    </div>
+
+    <hr></hr>
+
+    <button id='submit-create-deck' type='button' class='btn btn-default'>Create</button>
 
   </form>
 </div>
