@@ -1,0 +1,6 @@
+[submodule "src/php/lib/lightweight-rest"]
+	path = src/php/lib/lightweight-rest
+	url = https://github.com/ddmills/lightweight-rest.git
+[submodule "src/php/lib/mysqli-wrapper"]
+	path = src/php/lib/mysqli-wrapper
+	url = https://github.com/ddmills/mysqli-wrapper.git
