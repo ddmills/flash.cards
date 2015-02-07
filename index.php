@@ -1,7 +1,3 @@
-<?php require_once 'src/php/User_Manager.php'; ?>
-<?php require_once 'src/php/lib/mysqli-wrapper/mywrap.php'; ?>
-<?php $con  = new mywrap_con(); ?>
-<?php $uman = new User_Manager($con); ?>
 <?php include_once 'src/php/parts/header.php'; ?>
 <div class='container'>
   <div class='row'>

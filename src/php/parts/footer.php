@@ -1,7 +1,7 @@
   </div>
   <footer class='page-footer'>
     <div class='container'>
-      &middot; 2014 &middot; <a href='http://www.cashphrases.org/phrase/dont-sail-too-close-to-the-wind'>&quot;don't sail too close to the wind&quot;</a> &middot;
+      &middot; &copy; 2014 <a href='http://www.ddmills.com/'>Dalton Mills</a> &middot; <a href='http://www.cashphrases.org/phrase/dont-sail-too-close-to-the-wind'>&quot;don't sail too close to the wind&quot;</a> &middot;
     </div>
   </footer>
 
@@ -13,8 +13,13 @@
   <script src='/src/js/lib/jquery.min.js'></script>
   <script src='/src/js/lib/underscore.min.js'></script>
 
+  <!-- APP SCRIPTS -->
+  <script src='/src/js/app.main.js'></script>
+  <script src='/src/js/modules/app.util.js'></script>
+  <script src='/src/js/modules/app.ajax.js'></script>
+
   <!-- FONTS -->
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Slabo+27px|Open+Sans|Lato|Montserrat|Lora|Arimo|Bitter|Noto+Sans' rel='stylesheet' type='text/css'>
 
 </body>
 </html>

@@ -1,3 +1,7 @@
+<?php require_once 'src/php/User_Manager.php'; ?>
+<?php require_once 'src/php/lib/mysqli-wrapper/mywrap.php'; ?>
+<?php $con  = new mywrap_con(); ?>
+<?php $uman = new User_Manager($con); ?>
 <?php session_start(); ?>
 <?php $active = isset($active) ? $active : 'undefined'; ?>
 <!doctype html>
@@ -12,7 +16,7 @@
 <body>
   <header class='page-header'>
     <div class='container'>
-      <a class='nav-item brand' href='/' title='home page'>
+      <a class='nav-item brand' href='/' title='homepage'>
         flash.cards
       </a>
       <nav>

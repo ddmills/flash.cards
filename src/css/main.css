@@ -279,6 +279,32 @@ label {
   border-color     : #ccc;
 }
 
+.btn-default:active,
+.btn-default:focus,
+.btn-default.active,
+.btn-default.focus,
+.btn-default:hover {
+  color            : #333;
+  background-color : #e6e6e6;
+  border-color     : #adadad;
+}
+
+.btn-success {
+  background-color : #7C6;
+  color            : #F5FFFA;
+  border-color     : #7D967C;
+}
+
+.btn-success:active,
+.btn-success:focus,
+.btn-success.active,
+.btn-success.focus,
+.btn-success:hover {
+  color            : #F5FFFA;
+  background-color : #66AD58;
+  border-color     : #477245;
+}
+
 .btn-block {
   width   : 100%;
   display : block;
@@ -303,16 +329,6 @@ label {
 	font-size     : 18px;
 	line-height   : 1.3333333;
 	border-radius : 5px
-}
-
-.btn-default:active,
-.btn-default:focus,
-.btn-default.active,
-.btn-default.focus,
-.btn-default:hover {
-  color            : #333;
-  background-color : #e6e6e6;
-  border-color     : #adadad;
 }
 
 /*
