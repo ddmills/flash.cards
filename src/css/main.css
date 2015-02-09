@@ -375,4 +375,11 @@ hr {
  * SPECIFIC
  * =============================================== */
 
-
+._loader {
+  display    : none;
+  text-align : center;
+  color      : #777;
+}
+._loader-show {
+  display : block;
+}
