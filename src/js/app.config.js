@@ -1,4 +1,6 @@
 (function (root) {
+  var dependencies = {};
+  root.app = {};
 
   var default_view_options = [
     'model',
@@ -8,9 +10,14 @@
     'render'
   ];
 
-  var default_cont_options = [
+  var default_controller_options = [
     'initialize',
   ];
+
+  var default_dispatcher_options = [];
+
+  var default_listener_options = [];
+
 
   var View = function (options) {
     this.view_id = _.uniqueId ('view_');
@@ -24,20 +31,69 @@
     render: function () { return this; },
   });
 
-  var Cont = function (options) {
-    this.view_id = _.uniqueId ('cont_');
+
+
+
+  var Controller = function (options) {
+    this.controller_id = _.uniqueId ('controller_');
     options || (options = {});
-    _.extend (this, _.pick (options, default_cont_options));
+    _.extend (this, _.pick (options, default_controller_options));
     this.initialize.apply (this, arguments);
   }
 
-  _.extend (Cont.prototype, {
+  _.extend (Controller.prototype, {
     initialize: function () {}
   });
 
-  var dependencies = {};
+  var Dispatcher = function (options) {
+    this.dispatcher_id = _.uniqueId ('dispatcher_');
+    options || (options = {});
+    _.extend (this, _.pick (options, default_dispatcher_options));
+    this.initialize.apply (this, arguments);
+  }
 
-  root.app = {};
+  _.extend (Dispatcher.prototype, {
+    _listeners: {},
+    _events: {},
+
+    _dispatch: function (name, args) {
+      if (!this._events[name]) return this;
+      _.each (this._events[name], function(listener) {
+        listener.action.call (listener.context);
+      }, this);
+      return this;
+    },
+
+    trigger: function () {
+      _.each (arguments, this._dispatch, this);
+      return this;
+    },
+
+    when: function (name, action, context) {
+      var events = this._events[name] || (this._events[name] = []);
+      context = context || this;
+      events.push ({ action: action, context: context });
+      return this;
+    }
+  });
+
+
+  var Listener = function (options) {
+    this.listener_id = _.uniqueId ('listener_');
+    options || (options = {});
+    _.extend (this, _.pick (options, default_listener_options));
+    this.initialize.apply (this, arguments);
+  }
+
+  _.extend (Listener.prototype, {
+    listen: function (dispatcher, subject, action) {
+      var id = dispatcher._dispatcher_id || (dispatcher._dispatcher_id = );
+    }
+  });
+
+
+  _.extend (View.prototype, Dispatcher.prototype);
+  _.extend (Controller.prototype, Listener.prototype);
 
   root.app.get = function (key) {
     return dependencies[key];
@@ -111,9 +167,9 @@
       console.log ('creating controller: ' + name);
       var inj = this.inject (deps, func, scope);
       if (typeof func === 'function') {
-        return this.register (name, this.extend (Cont, inj()));
+        return this.register (name, this.extend (Controller, inj()));
       } else {
-        return this.register (name, this.extend (Cont, inj));
+        return this.register (name, this.extend (Controller, inj));
       }
     },
 

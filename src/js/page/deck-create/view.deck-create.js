@@ -24,6 +24,7 @@ app.define.view ('create_deck_view', ['loader_view'], function (loader_view, mod
     render: function () {
       container.html (template (model));
       loader.render ();
+      this.trigger ('rendered', 'swaggin');
       this.show_loader ();
       return this;
     }
