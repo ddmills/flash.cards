@@ -13,17 +13,18 @@
   <script src='/src/js/lib/jquery.min.js'></script>
   <script src='/src/js/lib/underscore.min.js'></script>
   <script src='/src/js/lib/extend.min.js'></script>
+  <script src='/src/js/lib/whale.js'></script>
 
   <!-- APP SCRIPTS -->
-  <script src='/src/js/app.config.js'></script>
-  <script src='/src/js/service/app.util.js'></script>
-  <script src='/src/js/service/app.endpoints.js'></script>
-  <script src='/src/js/service/app.ajax.js'></script>
-
-  <script src='/src/js/model/model.deck.js'></script>
-  <script src='/src/js/page/general/loader/view.loader.js'></script>
-  <script src='/src/js/page/deck-create/view.deck-create.js'></script>
-  <script src='/src/js/page/deck-create/controller.deck-create.js'></script>
+  <!-- // <script src='/src/js/app.config.js'></script>
+  // <script src='/src/js/service/app.util.js'></script>
+  // <script src='/src/js/service/app.endpoints.js'></script>
+  // <script src='/src/js/service/app.ajax.js'></script>
+  //
+  // <script src='/src/js/model/model.deck.js'></script>
+  // <script src='/src/js/page/general/loader/view.loader.js'></script>
+  // <script src='/src/js/page/deck-create/view.deck-create.js'></script>
+  // <script src='/src/js/page/deck-create/controller.deck-create.js'></script> -->
 
   <script src='/src/js/app.main.js'></script>
 

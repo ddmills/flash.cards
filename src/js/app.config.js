@@ -7,7 +7,7 @@
     'container',
     'events',
     'initialize',
-    'render'
+    // 'render'
   ];
 
   var default_controller_options = [
@@ -22,8 +22,10 @@
   var View = function (options) {
     this.view_id = _.uniqueId ('view_');
     options || (options = {});
+    _.extend (this, new Dispatcher (options));
+    _.extend (this.prototype, Dispatcher.prototype);
     _.extend (this, _.pick (options, default_view_options));
-    this.initialize.apply (this, arguments);
+    // this.initialize.apply (this, arguments);
   }
 
   _.extend (View.prototype, {
@@ -31,14 +33,13 @@
     render: function () { return this; },
   });
 
-
-
-
   var Controller = function (options) {
     this.controller_id = _.uniqueId ('controller_');
     options || (options = {});
+    // _.extend (this, new Listener (options));
+    _.extend (this.prototype, (new Listener (options)).prototype);
     _.extend (this, _.pick (options, default_controller_options));
-    this.initialize.apply (this, arguments);
+    // this.initialize.apply (this, arguments);
   }
 
   _.extend (Controller.prototype, {
@@ -49,7 +50,9 @@
     this.dispatcher_id = _.uniqueId ('dispatcher_');
     options || (options = {});
     _.extend (this, _.pick (options, default_dispatcher_options));
-    this.initialize.apply (this, arguments);
+    if (this.initialize) {
+      this.initialize.apply (this, arguments);
+    }
   }
 
   _.extend (Dispatcher.prototype, {
@@ -82,18 +85,20 @@
     this.listener_id = _.uniqueId ('listener_');
     options || (options = {});
     _.extend (this, _.pick (options, default_listener_options));
-    this.initialize.apply (this, arguments);
+    if (this.initialize) {
+      this.initialize.apply (this, arguments);
+    }
   }
 
   _.extend (Listener.prototype, {
-    listen: function (dispatcher, subject, action) {
-      var id = dispatcher._dispatcher_id || (dispatcher._dispatcher_id = );
+    listen: function (dispatcher, subject, action, context) {
+      console.log(dispatcher.dispatcher_id);
+      console.log(this.listener_id);
+
+      action();
+      // var id = dispatcher._dispatcher_id || (dispatcher._dispatcher_id = );
     }
   });
-
-
-  _.extend (View.prototype, Dispatcher.prototype);
-  _.extend (Controller.prototype, Listener.prototype);
 
   root.app.get = function (key) {
     return dependencies[key];
