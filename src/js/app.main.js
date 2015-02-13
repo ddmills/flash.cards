@@ -22,10 +22,11 @@ whale.Factory ('pirate', ['boat'], function (boat) {
   pirate.prototype = {
     drink: function (num) {
       drinks += num;
+      console.log ('on my ' + drinks + ' drink...');
     },
 
     speak: function () {
-      if (drinks < 2) {
+      if (drinks < 3) {
         console.log ('yo yo');
       } else {
         console.log ('YO DUDE');
@@ -37,13 +38,12 @@ whale.Factory ('pirate', ['boat'], function (boat) {
   return pirate;
 });
 
-
-whale.View ('loader', ['pirate'], function (pirate) {
-
-});
-
-var pirate = new (whale.get ('pirate'))('yo');
-console.log (pirate);
+var pirate = whale.make ('pirate', 'swagger');
+pirate.drink(1);
 pirate.speak();
-pirate.drink(4);
-pirate.speak();
+
+var abe = new whale.Dispatcher;
+var linc = new whale.Listener;
+
+linc.listen(abe, 'drink', 'drink', pirate);
+linc.listen(abe, 'speak', 'speak', pirate);
